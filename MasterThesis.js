@@ -6,6 +6,8 @@ function setup() {
 function draw() {
   rect(800,500,10,10);
   if(adaptive) {
-    ellipse(50,50,50,50);
+    rect(50,50,500,500);
   }
+  
+  adaptive = true;
 }
