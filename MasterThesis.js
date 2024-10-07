@@ -8,7 +8,7 @@ function preload(){
 
 
 function setup() {
-  createCanvas(1200, 650);
+  createCanvas(1400, 850);
   textBoxWidth = width-500;
   heightTimeSim = new HeightTimeSim(textBoxWidth);
 }
@@ -37,14 +37,14 @@ function drawBackground(){
 }
 
 function drawHypothesisPhase(){
-  //Displays the exercise
+  //Displays the exercise textbox
   let explanation = heightTimeSim.ArrayOfStrings('Als wetenschapper is het belangrijk om altijd eerst te zeggen wat we denken dat er gaat gebeuren. Laten we dat samen doen! Schrijf op wat je denkt dat er gaat gebeuren. Vergeet hierbij niet het doel van het onderzoek. Kijk daarom eerst goed naar wat we willen ontdekken. Maak daarna de zin af, zodat we onze verwachting duidelijk hebben verwoord. ', textBoxWidth);
   let titleExercise = 'Opdracht ' + heightTimeSim.exerciseNumber + '.1'
   drawTextBox(titleExercise, explanation, 400, 150, textBoxWidth);
   
-  //Displays the goal
+  //Displays the goal textbox
   let goal = heightTimeSim.goal;
-  drawTextBox('Wat we willen ontdekken:', goal, 400, 400, textBoxWidth);
+  drawTextBox('Wat we willen ontdekken:', goal, 400, 320, textBoxWidth);
 }
 
 function drawTextBox(title, stringArray, xpos, ypos, tempTextBoxWidth){
