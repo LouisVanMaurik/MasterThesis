@@ -1,11 +1,14 @@
 class DifferentSimulationVariables {
-  constructor() {
-  }
+  constructor(temptTextBoxWidth) {
+    this.textBoxWidth = temptTextBoxWidth;
+    this.hypothesisExp = this.ArrayOfStrings('Als wetenschapper is het belangrijk om altijd eerst te zeggen wat we denken dat er gaat gebeuren. Laten we dat samen doen! Schrijf op wat je denkt dat er gaat gebeuren. Vergeet hierbij niet het doel van het onderzoek. Kijk daarom eerst goed naar wat we willen ontdekken. Maak daarna de zin af, zodat we onze verwachting duidelijk hebben verwoord. ');
+    this.dependentOptions = ['de hoogte van de bal', 'het gewicht van de bal', 'de kleur van de bal'];
+}
   
   //Create a string of arrays depending on the input string, so it doesn't exceeds the line
-  ArrayOfStrings(inputString, temptTextBoxWidth){
+  ArrayOfStrings(inputString){
     const lines = [];
-    const maxLineLength = map(temptTextBoxWidth, 0, 1000, 0, 190);
+    const maxLineLength = map(this.textBoxWidth, 0, 1000, 0, 190);
     let currentLine = '';
     let currentLength = 0;
     let currentWord = '';
@@ -110,8 +113,8 @@ class DifferentSimulationVariables {
 
 class HeightTimeSim extends DifferentSimulationVariables {
   constructor(textBoxWidth){
-    super();
-    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoelang het duurt voordat de bal de grond raakt.', textBoxWidth);
+    super(textBoxWidth);
+    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoelang het duurt voordat de bal de grond raakt.');
     this.reqIndVar = 'de hoogte van de bal';
     this.reqDepVar = 'de tijd voordat de bal de grond raakt';
     this.exerciseNumber = '1';
@@ -120,10 +123,10 @@ class HeightTimeSim extends DifferentSimulationVariables {
 
 class HeightVelocitySim extends DifferentSimulationVariables {
   constructor(textBoxWidth){
-    super();
-    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoe snel de bal gaat wanneer hij de grond raakt.', textBoxWidth);
+    super(textBoxWidth);
+    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoe snel de bal gaat wanneer hij de grond raakt.');
     this.reqIndVar = 'de hoogte van de bal';
-    this.reqDepVar = 'de snelheid van de bal wanneer hij de raakt';
+    this.reqDepVar = 'de snelheid van de bal wanneer hij de grond raakt';
     this.exerciseNumber = '2';
   }
 }
