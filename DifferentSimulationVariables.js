@@ -2,7 +2,6 @@ class DifferentSimulationVariables {
   constructor(temptTextBoxWidth) {
     this.textBoxWidth = temptTextBoxWidth;
     this.hypothesisExp = this.ArrayOfStrings('Als wetenschapper is het belangrijk om altijd eerst te zeggen wat we denken dat er gaat gebeuren. Laten we dat samen doen! Schrijf op wat je denkt dat er gaat gebeuren. Vergeet hierbij niet het doel van het onderzoek. Kijk daarom eerst goed naar wat we willen ontdekken. Maak daarna de zin af, zodat we onze verwachting duidelijk hebben verwoord. ');
-    this.dependentOptions = ['de hoogte van de bal', 'het gewicht van de bal', 'de kleur van de bal'];
 }
   
   //Create a string of arrays depending on the input string, so it doesn't exceeds the line

@@ -1,6 +1,6 @@
 class DrawBackgroundObjects {
   constructor(tempTextBoxWidth) {
-    this.textBowWidth = tempTextBoxWidth;
+    this.textBoxWidth = tempTextBoxWidth;
   }
   
   drawBackground(){
@@ -26,7 +26,7 @@ class DrawBackgroundObjects {
     
     //Draw background white rectangle
     fill(255);
-    rect(xpos, ypos, this.textBowWidth, textsize*2 + stringArray.length*(textsize+5));
+    rect(xpos, ypos, this.textBoxWidth, textsize*2 + stringArray.length*(textsize+5));
     
     //write the the title
     fill(0);
@@ -39,24 +39,5 @@ class DrawBackgroundObjects {
     for (let i = 0; i <stringArray.length; i++){
       text(stringArray[i], xpos+10, ypos+55 + i * (textsize+5));
     }
-  }
-  
-  drawHypothesisBox(xpos, ypos){
-    let textsize = 20;
-    
-    //Draw background white rectangle
-    fill(255);
-    rect(xpos, ypos, this.textBowWidth, textsize*2 + 70);
-    
-    //write the the title
-    fill(0);
-    textSize(textsize);
-    textStyle(BOLD);
-    text('Wat we verwachten:', xpos+10, ypos+30);
-    
-    //Write the hypotheses
-    textStyle(NORMAL);
-    text('Als ik',xpos+10, ypos+60);
-    text('dan zal',xpos+10, ypos+90);
   }
 }
