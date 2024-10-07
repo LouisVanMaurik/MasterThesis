@@ -8,7 +8,7 @@ function preload(){
 
 
 function setup() {
-  createCanvas(1400, 850);
+  createCanvas(1300, 850);
   textBoxWidth = width-500;
   heightTimeSim = new HeightTimeSim(textBoxWidth);
 }
@@ -33,6 +33,7 @@ function drawBackground(){
   //schrijft text
   fill(255);
   textSize(50);
+  textStyle(BOLD);
   text('Onderzoeksfase: Verwachting', 350, 70);
 }
 
@@ -56,8 +57,10 @@ function drawTextBox(title, stringArray, xpos, ypos, tempTextBoxWidth){
   //schrijft text
   fill(0);
   textSize(textsize);
+  textStyle(BOLD);
   text(title, xpos+10, ypos+30);
 
+  textStyle(NORMAL);
   for (let i = 0; i <stringArray.length; i++){
     text(stringArray[i], xpos+10, ypos+55 + i * (textsize+5));
   }
