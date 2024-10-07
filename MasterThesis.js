@@ -8,7 +8,7 @@ function preload(){
 
 
 function setup() {
-  createCanvas(1300, 650);
+  createCanvas(1200, 650);
   textBoxWidth = width-500;
   heightTimeSim = new HeightTimeSim(textBoxWidth);
 }
