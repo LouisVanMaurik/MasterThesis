@@ -1,93 +1,119 @@
 class HypothesisPhase {
-  constructor(drawBackgroundObjects) {
+  constructor(drawBackgroundObjects, currentSim, nextPhaseMethod) {
     this.drawBackgroundObjects = drawBackgroundObjects;
+    this.currentSim = currentSim;
+    this.nextPhaseMethod = nextPhaseMethod;
 
-    this.dependentOptions = ['de hoogte van de bal', 'het gewicht van de bal'];
+    // Define options for dropdown menus
+    this.variableOptions = this.currentSim.variableOptions;
+
     this.dependentChanges = ['meer laat worden', 'minder laat worden', 'hetzelfde laat'];
-    this.independentOptions = ['de tijd', 'de snelheid'];
     this.independentChanges = ['meer worden', 'minder worden', 'hetzelfde blijven'];
 
+    // Create dropdowns
+    this.createDropdowns();
 
-    // Assign dropdowns by calling createDropdown and storing the result
-    this.dropdownDependentVar = this.createDropdown(this.dependentOptions, 480, 505);
-    this.dropdownDependentChange = this.createDropdown(this.dependentChanges, 680, 505);
-    this.dropdownIndependentVar = this.createDropdown(this.independentOptions, 490, 545);
-    this.dropdownIndependentChange = this.createDropdown(this.independentChanges, 975, 545);
-
-
-    this.removeButton = undefined; 
+    this.allSelected = false;
+    this.nextButton = this.createNextButton();
   }
 
-  drawHypothesisPhase(currentSim) {
-    //Displays the exercise textbox
-    let explanation = currentSim.hypothesisExp; 
-    let titleExercise = 'Opdracht ' + currentSim.exerciseNumber + '.1';
-    this.drawBackgroundObjects.drawTextBox(titleExercise, explanation, 400, 150);
+  createDropdowns() {
+    // Create independent and dependent variable dropdowns
+    this.dropdownIndependentVar = this.drawBackgroundObjects.createDropdown(
+      this.variableOptions, 490, 505, 'givenIndVar', this.currentSim
+    );
+    this.dropdownIndependentChange = this.drawBackgroundObjects.createDropdown(
+      this.dependentChanges, 770, 505, 'givenIndVarChange', this.currentSim
+    );
+    this.dropdownDependentVar = this.drawBackgroundObjects.createDropdown(
+      this.variableOptions, 510, 545, 'givenDepVar', this.currentSim
+    );
+    this.dropdownDependentChange = this.drawBackgroundObjects.createDropdown(
+      this.independentChanges, 790, 545, 'givenDepVarChange', this.currentSim
+    );
+  }
 
-    //Displays the goal textbox
-    let goal = currentSim.goal;
-    this.drawBackgroundObjects.drawTextBox('Wat we willen ontdekken:', goal, 400, 340);
+  createNextButton() {
+    return this.drawBackgroundObjects.createButton('Ga naar experiment', this.removeDropdown.bind(this), 895, 650);
+  }
 
-    //Draw hypothesis box
+  drawHypothesisPhase() {
+    this.drawTitle();
+    this.drawExplanation();
+    this.drawGoal();
     this.drawHypothesisBox(400, 460);
+    
+    this.updateAllSelected();
+    this.updateNextButtonStyle();
+  }
+
+  drawTitle() {
+    fill(255);
+    textSize(50);
+    textStyle(BOLD);
+    text('Onderzoeksfase: Verwachting', 350, 70);
+  }
+
+  drawExplanation() {
+    const explanation = this.currentSim.hypothesisExp;
+    const titleExercise = 'Opdracht ' + this.currentSim.exerciseNumber + '.1';
+    this.drawBackgroundObjects.drawTextBox(titleExercise, explanation, 400, 150);
+  }
+
+  drawGoal() {
+    const goal = this.currentSim.goal;
+    this.drawBackgroundObjects.drawTextBox('Wat we willen ontdekken:', goal, 400, 340);
   }
 
   drawHypothesisBox(xpos, ypos) {
-    let textsize = 20;
+    const textsize = 20;
 
-    //Draw background white rectangle
+    // Draw hypothesis background box
     fill(255);
     rect(xpos, ypos, this.drawBackgroundObjects.textBoxWidth, 140);
 
-    //write the title
+    // Draw hypothesis title
     fill(0);
     textSize(textsize);
     textStyle(BOLD);
     text('Wat we verwachten:', xpos + 10, ypos + 30);
 
-    //Write the hypotheses
+    // Draw hypothesis structure text
     textStyle(NORMAL);
-    text('Als ik', xpos + 10, ypos + 65);
-    text('dan zal          .................            wanneer de bal de grond raakt', xpos + 10, ypos + 105);
+    text('Als ik de', xpos + 10, ypos + 65);
+    text(',', xpos + 650, ypos + 65);
+    text('dan zal de ', xpos + 10, ypos + 105);
+    text('.', xpos + 670, ypos + 105);
+  }
 
-    // Create a button to remove the dropdown
-    if (!this.removeButton) {
-      this.removeButton = createButton('Remove Dropdown');
-      this.removeButton.position(10, 40);
+  updateAllSelected() {
+    // Check if all dropdowns have a selection to enable/disable the next button
+    this.allSelected = this.currentSim.getGivenIndVar() &&
+                       this.currentSim.getGivenDepVar() &&
+                       this.currentSim.getGivenIndVarChange() &&
+                       this.currentSim.getGivenDepVarChange();
+  }
 
-      // Use arrow function to retain correct 'this' context
-      this.removeButton.mousePressed(this.removeDropdown.bind(this));
+  updateNextButtonStyle() {
+    // Update next button style when all selections are made
+    if (this.allSelected) {
+      this.nextButton.style('background', 'linear-gradient(to bottom, #FFB347, #FF8000)'); // Gradient effect for 3D look
     }
   }
 
-  createDropdown(options, xpos, ypos) {
-    // Create and return a new dropdown
-    let dropdown = createSelect();
-    let defaultOption = '-- Maak een keuze --';
-    
-    dropdown.option(defaultOption); // Add the default option
-    dropdown.selected(defaultOption); // Select the default option
-  
-    // Add other options
-    options.forEach(option => dropdown.option(option));
-  
-    // Disable the default option
-    dropdown.elt[0].disabled = true; // Disable the first option by accessing DOM element directly
-  
-    // Set the position
-    dropdown.position(xpos, ypos);
-    
-   // Set custom styles for the dropdown
-    dropdown.style('font-size', '16px'); // Set font size of the text
-    dropdown.style('width', '190px'); // Set width of the dropdown
-    dropdown.style('height', '30px'); // Set height of the dropdown
-  
-    return dropdown; // Return the created dropdown
-  }
-
   removeDropdown() {
-    // Remove the dropdown elements from the DOM
-    if (this.dropdownDependentVar) this.dropdownDependentVar.remove();
-    if (this.dropdownIndependentVar) this.dropdownIndependentVar.remove();
+    this.currentSim.setHypothesis();
+
+    if (this.allSelected) {
+      // Remove dropdowns from DOM
+      this.dropdownDependentVar?.remove();
+      this.dropdownDependentChange?.remove();
+      this.dropdownIndependentVar?.remove();
+      this.dropdownIndependentChange?.remove();
+      this.nextButton?.remove();
+
+      // Proceed to the next phase
+      this.nextPhaseMethod();
+    }
   }
 }
