@@ -13,11 +13,72 @@
   <script language="javascript" type="text/javascript" src="MasterThesis.js"></script>
   <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
 
-  <!-- This line removes any default padding and style.
-       You might only need one of these values set. -->
-  <style> body { padding: 0; margin: 0; } </style>
+  <style>
+    body { padding: 0; margin: 0; }
+
+    /* Modal styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .close-button {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #modalOkButton {
+      padding: 10px 20px;
+      background-color: #FFB347; /* Color of the button */
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    #modalOkButton:hover {
+      background-color: #FF8000; /* Darker shade on hover */
+    }
+  </style>
 </head>
 
 <body>
+
+  <!-- Modal Structure -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2>Experiment Alert</h2>
+      <p id="modalMessage">This is your message!</p>
+      <button id="modalOkButton">OK</button>
+    </div>
+  </div>
+
 </body>
 </html>

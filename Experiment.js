@@ -251,7 +251,35 @@ class ExperimentPhase {
 
   doExperimentButton() {
     this.ypos = this.previousHeightSet;
-    alert("You clicked on the test button");
+
+    // Show the modal
+    const modal = document.getElementById("myModal");
+    const modalMessage = document.getElementById("modalMessage");
+    const closeButton = document.querySelector(".close-button");
+    const okButton = document.getElementById("modalOkButton");
+
+    // Set the modal message
+    modalMessage.innerText = "You clicked on the test button";
+
+    // Display the modal
+    modal.style.display = "block";
+
+    // Close the modal when the user clicks on <span> (x)
+    closeButton.onclick = function() {
+      modal.style.display = "none";
+    };
+
+    // Close the modal when the user clicks on the OK button
+    okButton.onclick = function() {
+      modal.style.display = "none";
+    };
+
+    // Close the modal when the user clicks anywhere outside of the modal
+    window.onclick = function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    };
   }
 
   doNextButton() {
