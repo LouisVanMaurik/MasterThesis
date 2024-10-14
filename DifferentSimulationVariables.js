@@ -8,7 +8,7 @@ class DifferentSimulationVariables {
     this.variableOptions = [
       'hoogte van de bal',
       'massa van de bal',
-      'de felheid van de bal',
+      'de kleur van de bal',
       'tijd voordat de bal de grond raakt',
       'snelheid als de bal de grond raakt'
     ];

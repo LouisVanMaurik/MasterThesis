@@ -11,21 +11,25 @@ class ExperimentPhase {
     //this.colorBall = [geen, red, blue];
 
     //Creates all experiment options buttons
-    this.weightOneButton = this.createImageButton('1KG', this.setBallWeightToOne.bind(this), this.experimentXpos-350+100, this.experimentYpos+10);
-    this.weightFiveButton = this.createImageButton('5KG', this.setBallWeightToFive.bind(this), this.experimentXpos-280+100, this.experimentYpos+10);
-    this.weightTenButton = this.createImageButton('10KG', this.setBallWeightToTen.bind(this), this.experimentXpos-210+100, this.experimentYpos+10);
-    this.hightTenButton = this.createImageButton('10M', this.setBallHeightToTen.bind(this), this.experimentXpos-350+100, this.experimentYpos + 100);
-    this.hightTwentyButton = this.createImageButton('20M', this.setBallHeightToTwenty.bind(this), this.experimentXpos-280+100, this.experimentYpos + 100);
-    this.hightThirtyButton = this.createImageButton('30M', this.setBallHeightToThirty.bind(this), this.experimentXpos-210+100, this.experimentYpos + 100);
-    this.redBallButton = this.createImageButton('Rood', this.setBallcolorRed.bind(this), this.experimentXpos-350+100, this.experimentYpos + 190);
-    this.blueBallButton = this.createImageButton('Blauw', this.setBallcolorBlue.bind(this), this.experimentXpos-280+100, this.experimentYpos + 190);
-    this.orangeBallButton = this.createImageButton('Oranje', this.setBallcolorOrange.bind(this), this.experimentXpos-210+100, this.experimentYpos + 190);
+    this.weightOneButton = this.createOptionButton('1KG', this.setBallWeightToOne.bind(this), this.experimentXpos-350+100, this.experimentYpos+10);
+    this.weightFiveButton = this.createOptionButton('5KG', this.setBallWeightToFive.bind(this), this.experimentXpos-280+100, this.experimentYpos+10);
+    this.weightTenButton = this.createOptionButton('10KG', this.setBallWeightToTen.bind(this), this.experimentXpos-210+100, this.experimentYpos+10);
+    this.hightTenButton = this.createOptionButton('10M', this.setBallHeightToTen.bind(this), this.experimentXpos-350+100, this.experimentYpos + 100);
+    this.hightTwentyButton = this.createOptionButton('20M', this.setBallHeightToTwenty.bind(this), this.experimentXpos-280+100, this.experimentYpos + 100);
+    this.hightThirtyButton = this.createOptionButton('30M', this.setBallHeightToThirty.bind(this), this.experimentXpos-210+100, this.experimentYpos + 100);
+    this.redBallButton = this.createOptionButton('Rood', this.setBallcolorRed.bind(this), this.experimentXpos-350+100, this.experimentYpos + 190);
+    this.blueBallButton = this.createOptionButton('Blauw', this.setBallcolorBlue.bind(this), this.experimentXpos-280+100, this.experimentYpos + 190);
+    this.orangeBallButton = this.createOptionButton('Oranje', this.setBallcolorOrange.bind(this), this.experimentXpos-210+100, this.experimentYpos + 190);
+
+    this.previousHeightSet = 0;
 
     this.setBallcolorRed();
     this.setBallHeightToTen();
     this.setBallWeightToOne();
 
+
     this.didOneExperiment = false;
+    this.experimentButton = this.createExperimentButton(this.doExperimentButton.bind(this));
     this.nextButton = this.createNextButton();
   }
 
@@ -124,6 +128,7 @@ class ExperimentPhase {
     this.makeSelectedButton(this.hightThirtyButton);
     this.makeUnselectedButton(this.hightTenButton);
     this.makeUnselectedButton(this.hightTwentyButton);
+    this.previousHeightSet = this.experimentYpos+75;
   }
 
   setBallHeightToTwenty() {
@@ -131,6 +136,7 @@ class ExperimentPhase {
     this.makeSelectedButton(this.hightTwentyButton);
     this.makeUnselectedButton(this.hightTenButton);
     this.makeUnselectedButton(this.hightThirtyButton);
+    this.previousHeightSet = this.experimentYpos+175;
   }
 
   setBallHeightToTen() {
@@ -138,6 +144,7 @@ class ExperimentPhase {
     this.makeSelectedButton(this.hightTenButton);
     this.makeUnselectedButton(this.hightTwentyButton);
     this.makeUnselectedButton(this.hightThirtyButton);
+    this.previousHeightSet = this.experimentYpos+275;
   }
 
   setBallWeightToTen() {
@@ -175,22 +182,48 @@ class ExperimentPhase {
   }
 
 
+  createExperimentButton(callback) {
+    const experimentButton = createButton('TEST'); // Empty title as it holds an image
+    experimentButton.position(430, 850);
+    experimentButton.mousePressed(callback);
 
-  // Creates a square button with an image that triggers a callback when clicked
-  createImageButton(text, callback, xpos, ypos) {
-    const buttonSize = '60px'; // Size of the square button
-    const imageButton = createButton(text); // Empty title as it holds an image
-    imageButton.position(xpos, ypos);
-    imageButton.mousePressed(callback);
+    this.styleExperimentButton(experimentButton);
+    this.addButtonHoverEffect(experimentButton);
 
-    this.styleImageButton(imageButton, buttonSize);
-    this.addImageButtonHoverEffect(imageButton);
-
-    return imageButton;
+    return experimentButton;
   }
 
-  // Helper method to apply styles and insert image into the button
-  styleImageButton(button, buttonSize) {
+  // Helper method to apply styles to the experiment button
+  styleExperimentButton(button) {
+    const backgroundGradient = 'linear-gradient(to bottom, #FFB347, #FF8000)';
+    button.style('background', backgroundGradient);
+    button.style('width', '310px');
+    button.style('height', '50px');
+    button.style('background-color', '#FFFFFF');
+    button.style('border', '2px solid black');
+    button.style('border-radius', '10px');
+    button.style('box-shadow', '0px 4px 8px rgba(0, 0, 0, 0.3)');
+    button.style('cursor', 'pointer');
+    button.style('font-weight', 'bold'); // Makes the text bold
+    button.style('color', '#FFFFFF'); // White text for better contrast
+    button.style('font-size', '30px'); // Optional: adjust text size if necessary
+  }
+
+  // Creates a square button with an image that triggers a callback when clicked
+  createOptionButton(text, callback, xpos, ypos) {
+    const buttonSize = '60px'; // Size of the square button
+    const OptionButton = createButton(text); // Empty title as it holds an image
+    OptionButton.position(xpos, ypos);
+    OptionButton.mousePressed(callback);
+
+    this.styleOptionButton(OptionButton, buttonSize);
+    this.addButtonHoverEffect(OptionButton);
+
+    return OptionButton;
+  }
+
+  // Helper method to apply styles to the option buttons
+  styleOptionButton(button, buttonSize) {
     button.style('width', buttonSize);
     button.style('height', buttonSize);
     button.style('background-color', '#FFFFFF');
@@ -204,7 +237,7 @@ class ExperimentPhase {
   }
 
   // Adds a hover effect to the image button for interactivity
-  addImageButtonHoverEffect(button) {
+  addButtonHoverEffect(button) {
     button.mouseOver(() => {
       button.style('box-shadow', '0px 6px 10px rgba(0, 0, 0, 0.4)'); // Darker shadow on hover
     }
@@ -214,6 +247,11 @@ class ExperimentPhase {
       button.style('box-shadow', '0px 4px 8px rgba(0, 0, 0, 0.3)'); // Original shadow
     }
     );
+  }
+
+  doExperimentButton() {
+    this.ypos = this.previousHeightSet;
+    alert("You clicked on the test button");
   }
 
   doNextButton() {
