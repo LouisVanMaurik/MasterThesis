@@ -12,6 +12,10 @@ function preload() {
   ballImgRed = loadImage('ballImageRed.png');
   ballImgBlue = loadImage('ballImageBlue.png');
   ballImgOrange = loadImage('ballImageOrange.png');
+  progressBarVerwachting = loadImage('ProgressBarVerwachting.png'); 
+  progressBarExperiment = loadImage('ProgressBarExperiment.png'); 
+  progressBarControle = loadImage('ProgressBarControle.png'); 
+  progressBarBewijzen = loadImage('ProgressBarBewijzen.png'); 
 }
 
 
@@ -35,18 +39,21 @@ function drawCurrentPhase(){
       hypothesisPhase = new HypothesisPhase(drawBackgroundObjects, heightTimeSim, nextPhase);
     }
     hypothesisPhase.drawHypothesisPhase();
+    image(progressBarVerwachting, 20, 200);
     break;
   case 'experiment':
     if (!experimentPhase) {
       experimentPhase = new ExperimentPhase(drawBackgroundObjects, heightTimeSim, nextPhase);
     }
     experimentPhase.drawExperimentPhase();
+    image(progressBarExperiment, 20, 200);
     break;
   case 'analyze':
     if (!analyzePhase) {
       analyzePhase = new AnalyzePhase(drawBackgroundObjects, heightTimeSim, nextPhase);
     }
     analyzePhase.drawAnalyzePhase();
+    image(progressBarControle, 20, 200);
     break;
   default:
     console.log('CurrentPhase has a really weird value');

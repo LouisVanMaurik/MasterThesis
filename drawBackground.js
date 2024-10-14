@@ -17,7 +17,7 @@ class DrawBackgroundObjects {
 
   // Draws a translucent overlay for the background
   drawOverlay() {
-    fill(0, 207, 193, 200);
+    fill(0, 207, 193);
     rect(0, 0, width, height);
   }
 
