@@ -4,11 +4,16 @@ class ExperimentPhase {
     this.currentSim = currentSim;
     this.nextPhaseMethod = nextPhaseMethod;
 
+    //state of the experiment
+    this.isRunning = false;
+    this.fallingSpeed = 0;
+
+    //These are the x en y pos of the experiment, so it could be moved if needed
     this.experimentXpos = 800;
     this.experimentYpos = 550;
+    //These are the xpos and ypos of the falling ball, which are conncected to the experiment
     this.xpos = this.experimentXpos+225;
     this.ypos = this.experimentYpos+275;
-    //this.colorBall = [geen, red, blue];
 
     //Creates all experiment options buttons
     this.weightOneButton = this.createOptionButton('1KG', this.setBallWeightToOne.bind(this), this.experimentXpos-350+100, this.experimentYpos+10);
@@ -21,8 +26,13 @@ class ExperimentPhase {
     this.blueBallButton = this.createOptionButton('Blauw', this.setBallcolorBlue.bind(this), this.experimentXpos-280+100, this.experimentYpos + 190);
     this.orangeBallButton = this.createOptionButton('Oranje', this.setBallcolorOrange.bind(this), this.experimentXpos-210+100, this.experimentYpos + 190);
 
-    this.previousHeightSet = 0;
+    //Declares current selected values
+    this.previousYposHeightSet = undefined;      //This one seems odd, but it is because the height in the experiment is not actually e.g. 30, but a specific location in the canvas
+    this.currentSelcetedColor = undefined;
+    this.currentSelectedHeight = undefined;
+    this.currentSelectedWeight = undefined;
 
+    //Initialize previous variables with their functions
     this.setBallcolorRed();
     this.setBallHeightToTen();
     this.setBallWeightToOne();
@@ -45,6 +55,10 @@ class ExperimentPhase {
     image(experimentImg, this.experimentXpos, this.experimentYpos);
     this.drawExperiment();
     this.drawButtonBoxes();
+
+    if (this.didOneExperiment) {
+      this.nextButton.style('background', 'linear-gradient(to bottom, #FFB347, #FF8000)'); // Gradient effect for 3D look
+    }
   }
 
   // Draws the title for the analyze phase
@@ -93,92 +107,50 @@ class ExperimentPhase {
     image(this.currentBallColor, this.xpos, this.ypos);
     textAlign(CENTER);
     fill(255);
-    console.log('The weight of the ball in draw is now: ' + this.weightBall);
+    console.log('The weight of the ball in draw is now: ' + this.currentSelectedWeight);
 
-    text(this.weightBall + 'KG', this.xpos+30, this.ypos+38);
+    text(this.currentSelectedWeight + 'KG', this.xpos+30, this.ypos+38);
     textAlign(LEFT);
-    if (this.ypos <= this.experimentXpos+90) {
-      this.ypos++
+    if (this.isRunning) {
+      if (this.ypos <= this.experimentXpos+90) {
+        this.ypos = this.ypos+this.fallingSpeed;
+        this.fallingSpeed += 0.005;
+      } else {
+        this.isRunning = false;
+        this.fallingSpeed = 0;
+
+        this.currentSim.results.push([this.currentSelectedWeight, this.currentSelectedHeight, this.currentSelectedColor, this.calculateTimeToDrop(), this.calculateVelocityAtDrop()]);
+        let resultString = 'Massa: ' + this.currentSim.results[0][0] + ', Hoogte: ' + this.currentSim.results[0][1] +
+          ', Kleur: ' + this.currentSim.results[0][2] + ', Tijd: '+ this.currentSim.results[0][3] + ', Snelheid: ' + this.currentSim.results[0][4];
+        this.drawBackgroundObjects.createPopUp('Resultaten:', resultString);
+      }
     }
+    this.drawStopwatch();
   }
 
-  setBallcolorRed() {
-    this.currentBallColor = ballImgRed; // Makes the ball red by selecting the according button
-    this.makeSelectedButton(this.redBallButton);
-    this.makeUnselectedButton(this.blueBallButton);
-    this.makeUnselectedButton(this.orangeBallButton);
+  drawStopwatch() {
+    image(stopwatch, 1090, 850);
+    fill(0);
+    textSize(30);
+    textStyle(BOLD);
+    text('00:00', 1138, 980);
   }
 
-  setBallcolorBlue() {
-    this.currentBallColor = ballImgBlue; // Makes the ball blue by selecting the according button
-    this.makeSelectedButton(this.blueBallButton);
-    this.makeUnselectedButton(this.orangeBallButton);
-    this.makeUnselectedButton(this.redBallButton);
+  doExperimentButton() {
+    this.didOneExperiment = true;
+    this.isRunning = true;
   }
 
-  setBallcolorOrange() {
-    this.currentBallColor = ballImgOrange; // Makes the ball orange by selecting the according button
-    this.makeSelectedButton(this.orangeBallButton);
-    this.makeUnselectedButton(this.blueBallButton);
-    this.makeUnselectedButton(this.redBallButton);
+  calculateTimeToDrop() {
+    return this.roundToTwoDecimals(Math.sqrt((2 * this.currentSelectedHeight) / 1.625));
   }
 
-  setBallHeightToThirty() {
-    this.ypos = this.experimentYpos+75;
-    this.makeSelectedButton(this.hightThirtyButton);
-    this.makeUnselectedButton(this.hightTenButton);
-    this.makeUnselectedButton(this.hightTwentyButton);
-    this.previousHeightSet = this.experimentYpos+75;
+  calculateVelocityAtDrop() {
+    return this.roundToTwoDecimals(1.625 * this.calculateTimeToDrop());
   }
 
-  setBallHeightToTwenty() {
-    this.ypos = this.experimentYpos+175;
-    this.makeSelectedButton(this.hightTwentyButton);
-    this.makeUnselectedButton(this.hightTenButton);
-    this.makeUnselectedButton(this.hightThirtyButton);
-    this.previousHeightSet = this.experimentYpos+175;
-  }
-
-  setBallHeightToTen() {
-    this.ypos = this.experimentYpos+275;
-    this.makeSelectedButton(this.hightTenButton);
-    this.makeUnselectedButton(this.hightTwentyButton);
-    this.makeUnselectedButton(this.hightThirtyButton);
-    this.previousHeightSet = this.experimentYpos+275;
-  }
-
-  setBallWeightToTen() {
-    this.weightBall = 10;
-    this.makeSelectedButton(this.weightTenButton);
-    this.makeUnselectedButton(this.weightOneButton);
-    this.makeUnselectedButton(this.weightFiveButton);
-  }
-
-  setBallWeightToFive() {
-    this.weightBall = 5;
-    this.makeSelectedButton(this.weightFiveButton);
-    this.makeUnselectedButton(this.weightOneButton);
-    this.makeUnselectedButton(this.weightTenButton);
-  }
-
-  setBallWeightToOne() {
-    this.weightBall = 1;
-    this.makeSelectedButton(this.weightOneButton);
-    this.makeUnselectedButton(this.weightFiveButton);
-    this.makeUnselectedButton(this.weightTenButton);
-  }
-
-  makeSelectedButton(button) {
-    button.style('color', '#FFFFFF'); // White text for better contrast
-    button.style('font-size', '16px'); // Adjust text size
-    const backgroundGradient = 'linear-gradient(to bottom, #FFB347, #FF8000)';
-    button.style('background', backgroundGradient);
-  }
-
-  makeUnselectedButton(button) {
-    button.style('color', '#000000'); // White text for better contrast
-    button.style('font-size', '14px'); // Adjust text size
-    button.style('background', '#FFFFFF'); // Reset background to solid white
+  roundToTwoDecimals(value) {
+    return Math.round((value + Number.EPSILON) * 100) / 100;
   }
 
 
@@ -232,7 +204,7 @@ class ExperimentPhase {
     button.style('box-shadow', '0px 4px 8px rgba(0, 0, 0, 0.3)');
     button.style('cursor', 'pointer');
     button.style('font-weight', 'bold'); // Makes the text bold
-    button.style('color', '#00000'); // Optional: white text for better contrast
+    button.style('color', '#00000'); //
     button.style('font-size', '14px'); // Optional: adjust text size if necessary
   }
 
@@ -249,38 +221,7 @@ class ExperimentPhase {
     );
   }
 
-  doExperimentButton() {
-    this.ypos = this.previousHeightSet;
 
-    // Show the modal
-    const modal = document.getElementById("myModal");
-    const modalMessage = document.getElementById("modalMessage");
-    const closeButton = document.querySelector(".close-button");
-    const okButton = document.getElementById("modalOkButton");
-
-    // Set the modal message
-    modalMessage.innerText = "You clicked on the test button";
-
-    // Display the modal
-    modal.style.display = "block";
-
-    // Close the modal when the user clicks on <span> (x)
-    closeButton.onclick = function() {
-      modal.style.display = "none";
-    };
-
-    // Close the modal when the user clicks on the OK button
-    okButton.onclick = function() {
-      modal.style.display = "none";
-    };
-
-    // Close the modal when the user clicks anywhere outside of the modal
-    window.onclick = function(event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    };
-  }
 
   doNextButton() {
     //Removes all experiment option buttons
@@ -298,5 +239,124 @@ class ExperimentPhase {
 
     // Proceed to the next phase
     this.nextPhaseMethod();
+  }
+
+
+  //All the next methods are called when the specific option button is clicked:
+
+
+  setBallcolorRed() {
+    if (this.isRunning === false) {
+      this.currentBallColor = ballImgRed; // Makes the ball red by selecting the according button
+      this.currentSelectedColor = 'rood';
+
+      this.makeSelectedButton(this.redBallButton);
+      this.makeUnselectedButton(this.blueBallButton);
+      this.makeUnselectedButton(this.orangeBallButton);
+    }
+  }
+
+  setBallcolorBlue() {
+    if (this.isRunning === false) {
+      this.currentBallColor = ballImgBlue; // Makes the ball blue by selecting the according button
+      this.currentSelectedColor = 'blauw';
+
+      this.makeSelectedButton(this.blueBallButton);
+      this.makeUnselectedButton(this.orangeBallButton);
+      this.makeUnselectedButton(this.redBallButton);
+    }
+  }
+
+  setBallcolorOrange() {
+    if (this.isRunning === false) {
+      this.currentBallColor = ballImgOrange; // Makes the ball orange by selecting the according button
+      this.currentSelectedColor = 'oranje';
+
+      this.makeSelectedButton(this.orangeBallButton);
+      this.makeUnselectedButton(this.blueBallButton);
+      this.makeUnselectedButton(this.redBallButton);
+    }
+  }
+
+  setBallHeightToThirty() {
+    if (this.isRunning === false) {
+      this.ypos = this.experimentYpos+75;
+      this.currentSelectedHeight = 30;
+
+      this.makeSelectedButton(this.hightThirtyButton);
+      this.makeUnselectedButton(this.hightTenButton);
+      this.makeUnselectedButton(this.hightTwentyButton);
+      this.previousYposHeightSet = this.experimentYpos+75;
+    }
+  }
+
+  setBallHeightToTwenty() {
+    if (this.isRunning === false) {
+      this.ypos = this.experimentYpos+175;
+      this.currentSelectedHeight = 20;
+
+      this.makeSelectedButton(this.hightTwentyButton);
+      this.makeUnselectedButton(this.hightTenButton);
+      this.makeUnselectedButton(this.hightThirtyButton);
+      this.previousYposHeightSet = this.experimentYpos+175;
+    }
+  }
+
+  setBallHeightToTen() {
+    if (this.isRunning === false) {
+      this.ypos = this.experimentYpos+275;
+      this.currentSelectedHeight = 10;
+
+      this.makeSelectedButton(this.hightTenButton);
+      this.makeUnselectedButton(this.hightTwentyButton);
+      this.makeUnselectedButton(this.hightThirtyButton);
+      this.previousYposHeightSet = this.experimentYpos+275;
+    }
+  }
+
+  setBallWeightToTen() {
+    if (this.isRunning === false) {
+      this.currentSelectedWeight = 10;
+
+      this.makeSelectedButton(this.weightTenButton);
+      this.makeUnselectedButton(this.weightOneButton);
+      this.makeUnselectedButton(this.weightFiveButton);
+    }
+  }
+
+  setBallWeightToFive() {
+    if (this.isRunning === false) {
+
+      this.currentSelectedWeight = 5;
+
+      this.makeSelectedButton(this.weightFiveButton);
+      this.makeUnselectedButton(this.weightOneButton);
+      this.makeUnselectedButton(this.weightTenButton);
+    }
+  }
+
+  setBallWeightToOne() {
+    if (this.isRunning === false) {
+      this.currentSelectedWeight = 1;
+
+      this.makeSelectedButton(this.weightOneButton);
+      this.makeUnselectedButton(this.weightFiveButton);
+      this.makeUnselectedButton(this.weightTenButton);
+    }
+  }
+
+  //changes the css style of the button that is selected
+  makeSelectedButton(button) {
+    button.style('color', '#FFFFFF'); // White text
+    button.style('font-size', '16px'); // Adjust text size
+    const backgroundGradient = 'linear-gradient(to bottom, #FFB347, #FF8000)';
+    button.style('background', backgroundGradient); //Set the background to an orange gradient
+  }
+
+  //changes the css style back to normal of the buttons that are unselected
+  makeUnselectedButton(button) {
+    button.style('color', '#000000'); // Black text
+    button.style('font-size', '14px'); // Adjust text size
+    button.style('background', '#FFFFFF'); // Reset background to solid white
   }
 }

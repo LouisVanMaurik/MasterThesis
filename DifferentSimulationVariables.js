@@ -228,17 +228,18 @@ class DifferentSimulationVariables {
 class HeightTimeSim extends DifferentSimulationVariables {
   constructor(textBoxWidth) {
     super(textBoxWidth);
-    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoelang het duurt voordat de bal de grond raakt.');
+    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoelang het duurt voordat de bal de grond raakt op de maan.');
     this.reqIndVar = 'hoogte van de bal';
     this.reqDepVar = 'tijd voordat de bal de grond raakt';
     this.exerciseNumber = '1';
+    this.results = [];
   }
 }
 
 class HeightVelocitySim extends DifferentSimulationVariables {
   constructor(textBoxWidth) {
     super(textBoxWidth);
-    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoe snel de bal gaat wanneer hij de grond raakt.');
+    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoe snel de bal gaat wanneer hij de grond raakt op de maan.');
     this.reqIndVar = 'hoogte van de bal';
     this.reqDepVar = 'snelheid als de bal de grond raakt';
     this.exerciseNumber = '2';

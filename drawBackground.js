@@ -57,7 +57,8 @@ class DrawBackgroundObjects {
     textStyle(NORMAL);
     stringArray.forEach((line, index) => {
       text(line, xpos + 10, ypos + 55 + index * (textSizeValue + 5));
-    });
+    }
+    );
   }
 
   // Creates a dropdown with options at a specific position and associates it with a callback
@@ -122,10 +123,45 @@ class DrawBackgroundObjects {
   addButtonHoverEffect(button) {
     button.mouseOver(() => {
       button.style('box-shadow', '0px 8px 14px rgba(0, 0, 0, 0.4)'); // Darker shadow on hover
-    });
+    }
+    );
 
     button.mouseOut(() => {
       button.style('box-shadow', '0px 6px 12px rgba(0, 0, 0, 0.3)'); // Original shadow
-    });
+    }
+    );
+  }
+
+  createPopUp(title, text) {
+
+    // Show the modal
+    const modal = document.getElementById("myModal");
+    const modalMessage = document.getElementById("modalMessage");
+    const closeButton = document.querySelector(".close-button");
+    const okButton = document.getElementById("modalOkButton");
+
+    // Set the modal message
+    modalTitle.innerText = title;
+    modalMessage.innerText = text;
+
+    // Display the modal
+    modal.style.display = "block";
+
+    // Close the modal when the user clicks on <span> (x)
+    closeButton.onclick = function() {
+      modal.style.display = "none";
+    };
+
+    // Close the modal when the user clicks on the OK button
+    okButton.onclick = function() {
+      modal.style.display = "none";
+    };
+
+    // Close the modal when the user clicks anywhere outside of the modal
+    window.onclick = function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    };
   }
 }
