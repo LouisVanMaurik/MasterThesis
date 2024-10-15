@@ -12,6 +12,7 @@ function preload() {
   ballImgRed = loadImage('ballImageRed.png');
   ballImgBlue = loadImage('ballImageBlue.png');
   ballImgOrange = loadImage('ballImageOrange.png');
+  stopwatch = loadImage('stopwatch.png');
   progressBarVerwachting = loadImage('ProgressBarVerwachting.png'); 
   progressBarExperiment = loadImage('ProgressBarExperiment.png'); 
   progressBarControle = loadImage('ProgressBarControle.png'); 
