@@ -3,7 +3,7 @@ let heightVelocitySim;
 let drawBackground;
 let hypothesisPhase, experimentPhase, analyzePhase, proofPhase;
 let differentSimulationVariables;
-let currentPhase = 'experiment';
+let currentPhase = 'hypothesis';
 
 
 function preload() {
