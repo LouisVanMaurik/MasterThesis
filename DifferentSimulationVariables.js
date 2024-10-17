@@ -4,6 +4,7 @@ class DifferentSimulationVariables {
     this.hypothesisExp = this.ArrayOfStrings('Als wetenschapper is het belangrijk om altijd eerst te zeggen wat we denken dat er gaat gebeuren. Laten we dat samen doen! Schrijf op wat je denkt dat er gaat gebeuren. Vergeet hierbij niet het doel van het onderzoek. Kijk daarom eerst goed naar wat we willen ontdekken. Maak daarna de zin af, zodat we onze verwachting duidelijk hebben verwoord. ');
     this.experimentExp = this.ArrayOfStrings('Het is nu tijd om het experiment uit te voeren. Wat spannend! De bedoeling is dat we nu onze verwachting gaan testen. Klopt onze verwachting wel? Of gebeurt er totaal iets anders?  Gebruik de simulatie om er achter te komen of je verwachting klopt!');
     this.analyzeExp = this.ArrayOfStrings('We gaan nu kijken of wat er gebeurde hetzelfde is als wat we dachten dat er ging gebeuren. Wat gebeurde er aan het eind? Was onze verwachting uteindelijk waar of niet waar?  ');
+    this.proofExp = this.ArrayOfStrings('Elke wetenschapper moet bewijzen wanneer ze zeggen dat er iets gebeurt is. Dit is de reden dat we alle resultaten hadden opgeschreven tijdens het experimenteren. Voor deze opdracht, kies alle resultaten die onze beschrijving van de gebeurtenis bewijzen. Alle onnodige experimenten hoef je dus niet te selecteren! ');
 
     this.variableOptions = [
       'hoogte van de bal',
@@ -27,14 +28,23 @@ class DifferentSimulationVariables {
     this.hypothesisCheck = undefined;
 
     this.givenHypothesis = ['No hypothesis has been set yet', 'this text is a placeholder'];
+    this.givenEvidence = ['No evidence has been selected', 'This text is a placeholder'];
   }
 
   setHypothesis() {
     this.givenHypothesis = this.ArrayOfStrings("Als ik de " + this.givenIndVar + " " + this.givenIndVarChange + ", dan zal de " + this.givenDepVar + " " + this.givenDepVarChange + ".");
   }
+  
+  setEvidence(){
+    this.givenEvidence = this.ArrayOfStrings("Toen ik de " + this.givenIndVarCheck + " " + this.givenIndVarChangeCheck + ", ging de " + this.givenDepVarCheck + " " + this.givenDepVarChangeCheck + ".");
+  }
 
   getHypothesis() {
     return this.givenHypothesis;
+  }
+  
+  getEvidence() {
+    return this.givenEvidence;
   }
 
   getGivenIndVar() {

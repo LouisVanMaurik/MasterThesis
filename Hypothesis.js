@@ -19,18 +19,10 @@ class HypothesisPhase {
 
   createDropdowns() {
     // Create independent and dependent variable dropdowns
-    this.dropdownIndependentVar = this.drawBackgroundObjects.createDropdown(
-      this.variableOptions, 490, 505, 'givenIndVar', this.currentSim
-    );
-    this.dropdownIndependentChange = this.drawBackgroundObjects.createDropdown(
-      this.dependentChanges, 770, 505, 'givenIndVarChange', this.currentSim
-    );
-    this.dropdownDependentVar = this.drawBackgroundObjects.createDropdown(
-      this.variableOptions, 510, 545, 'givenDepVar', this.currentSim
-    );
-    this.dropdownDependentChange = this.drawBackgroundObjects.createDropdown(
-      this.independentChanges, 790, 545, 'givenDepVarChange', this.currentSim
-    );
+    this.dropdownIndependentVar = this.drawBackgroundObjects.createDropdown(this.variableOptions, 490, 505, 'givenIndVar', this.currentSim);
+    this.dropdownIndependentChange = this.drawBackgroundObjects.createDropdown(this.dependentChanges, 770, 505, 'givenIndVarChange', this.currentSim);
+    this.dropdownDependentVar = this.drawBackgroundObjects.createDropdown(this.variableOptions, 510, 545, 'givenDepVar', this.currentSim);
+    this.dropdownDependentChange = this.drawBackgroundObjects.createDropdown(this.independentChanges, 790, 545, 'givenDepVarChange', this.currentSim);
   }
 
   createNextButton() {

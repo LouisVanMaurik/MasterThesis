@@ -1,7 +1,7 @@
 let heightTimeSim;
 let heightVelocitySim;
 let drawBackground;
-let hypothesisPhase, experimentPhase, analyzePhase;
+let hypothesisPhase, experimentPhase, analyzePhase, proofPhase;
 let differentSimulationVariables;
 let currentPhase = 'experiment';
 
@@ -55,6 +55,13 @@ function drawCurrentPhase(){
     }
     analyzePhase.drawAnalyzePhase();
     image(progressBarControle, 20, 200);
+    break;
+  case 'proof':
+    if (!proofPhase) {
+      proofPhase = new ProofPhase(drawBackgroundObjects, heightTimeSim, nextPhase);
+    }
+    proofPhase.drawProofPhase();
+    image(progressBarBewijzen, 20, 200);
     break;
   default:
     console.log('CurrentPhase has a really weird value');

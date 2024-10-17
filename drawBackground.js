@@ -5,18 +5,12 @@ class DrawBackgroundObjects {
 
   // Draws the background
   drawBackground() {
-    this.drawImage();
-    this.drawOverlay();
+    this.drawBackgroundColor();
     this.drawSidePanels();
   }
 
-  // Helper method to draw the background image
-  drawImage() {
-    //image(backgroundImg, 300, 0);
-  }
-
-  // Draws a translucent overlay for the background
-  drawOverlay() {
+  // Draws a solid color for the background
+  drawBackgroundColor() {
     fill(0, 207, 193);
     rect(0, 0, width, height);
   }
@@ -38,7 +32,7 @@ class DrawBackgroundObjects {
     this.drawTextLines(stringArray, xpos, ypos, textSizeValue);
   }
 
-  // Helper method to draw the background of the text box
+  // Draw the background of the text box
   drawTextBoxBackground(xpos, ypos, height) {
     fill(255);
     rect(xpos, ypos, this.textBoxWidth, height);
@@ -70,14 +64,17 @@ class DrawBackgroundObjects {
 
   // Helper method to initialize a dropdown with options and styles
   initializeDropdown(dropdown, options, dropdownString, xpos, ypos, currentSim) {
+    // Set dropdown position
+    dropdown.position(xpos, ypos); 
+    
+    //Adds a default option but makes sure it is disabled
     const defaultOption = '-- Maak een keuze --';
     dropdown.option(defaultOption);
     dropdown.selected(defaultOption);
-    dropdown.elt[0].disabled = true; // Disable the default option
+    dropdown.elt[0].disabled = true;
 
     options.forEach(option => dropdown.option(option)); // Add the provided options
 
-    dropdown.position(xpos, ypos); // Set dropdown position
     dropdown.changed(() => currentSim.setDropdownSelection(dropdownString, dropdown.value())); // On selection change
 
     this.styleDropdown(dropdown); // Apply custom styles

@@ -112,6 +112,8 @@ class AnalyzePhase {
   }
 
   removeDropdown() {
+    this.currentSim.setEvidence();
+    
     if (this.allSelected) {
       this.dropdownIndependentVarCheck?.remove();
       this.dropdownIndependentChangeCheck?.remove();
