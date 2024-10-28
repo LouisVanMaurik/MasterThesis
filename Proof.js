@@ -1,8 +1,10 @@
 class ProofPhase {
-  constructor(drawBackgroundObjects, currentSim, nextPhaseMethod) {
+  constructor(drawBackgroundObjects, currentSim, adaptiveFeedback, nextPhaseMethod, previousPhaseMethod) {
     this.drawBackgroundObjects = drawBackgroundObjects;
     this.currentSim = currentSim;
+    this.adaptiveFeedback = adaptiveFeedback;
     this.nextPhaseMethod = nextPhaseMethod;
+    this.previousPhaseMethod = previousPhaseMethod;
 
     this.ProofBoxXpos = 400;
     this.ProofBoxYpos = 450;
@@ -10,6 +12,13 @@ class ProofPhase {
     // Create an array to store the checkboxes so we can reference them later if needed
     this.checkboxes = [];
     this.createCheckBoxes();
+
+    this.nextButton = this.createNextButton();
+    this.previousButton = this.createPreviousButton();
+  }
+
+  createNextButton() {
+    return this.drawBackgroundObjects.createButton('Volgende', this.doNextButton.bind(this), 895, 650, '300px', '60px');
   }
 
   createCheckBoxes() {
@@ -21,8 +30,10 @@ class ProofPhase {
     const xpos = this.ProofBoxXpos + 30; // Move 5 pixels to the left
     const ypos = this.ProofBoxYpos + 65; // Move 20 pixels down
 
-    // Draw each checkbox and place it inside the canvas
-    for (let i = 0; i < this.currentSim.results.length; i++) {
+    // Draw each checkbox and place it inside the canvas 
+    // NOTE: It lopes from the length of checkboxes. If there are already some checkboxes made, it should not make new one on top of it
+    //       This makes sure you can add results, even though the proof class was already created
+    for (let i = this.checkboxes.length; i < this.currentSim.results.length; i++) {
       let checkbox = createCheckbox('', false);  // Use p5.js method to create a checkbox
       checkbox.position(xpos, ypos + (i * rowHeight));  // Position checkbox inside the canvas
 
@@ -34,13 +45,17 @@ class ProofPhase {
     }
   }
 
+  createPreviousButton() {
+    return this.drawBackgroundObjects.createButton('Ga terug', this.doPreviousButton.bind(this), 695, 650, '150px', '60px');
+  }
+
   // Main method to draw the analyze phase
   drawProofPhase() {
     this.drawTitle();
     this.drawExerciseBox();
     this.drawOutcomeBox();
     this.drawProofBox();
-    
+
     //TEST CODE TO SEE WHICH CHECKBOXES ARE SELECTED
     //let theString = '';
     //for (let i = 0; i < this.checkboxes.length; i++) {
@@ -120,7 +135,42 @@ class ProofPhase {
 
     textAlign(LEFT);
   }
-  
+
+  doPreviousButton() {
+    this.hideAllDomObjects();
+    this.previousPhaseMethod();
+  }
+
+  doNextButton() {
+    this.hideAllDomObjects();
+    this.nextPhaseMethod();
+  }
+
+  hideAllDomObjects() {
+    //delete all checkboxes
+    for (let i = 0; i < this.checkboxes.length; i++) {
+      this.checkboxes[i].hide();
+    }
+
+    //delete the buttons
+    this.nextButton.hide();
+    this.previousButton.hide();
+  }
+
+  unhide() {
+    //WHY IS IT, THE MOMENT I UNCOMMENT THIS LINE THE CHECKBOXES DON'T WORK ANYMORE
+    for (let i = 0; i < this.checkboxes.length; i++) {
+      this.checkboxes[i].show();
+    }
+
+    this.createCheckBoxes();
+
+
+    //delete the buttons
+    this.nextButton.show();
+    this.previousButton.show();
+  }
+
   // // Method to check the status of each checkbox
   //checkCheckboxesStatus() {
   //  for (let i = 0; i < this.checkboxes.length; i++) {

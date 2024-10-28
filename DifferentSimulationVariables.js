@@ -2,24 +2,22 @@ class DifferentSimulationVariables {
   constructor(temptTextBoxWidth) {
     this.textBoxWidth = temptTextBoxWidth;
     this.hypothesisExp = this.ArrayOfStrings('Als wetenschapper is het belangrijk om altijd eerst te zeggen wat we denken dat er gaat gebeuren. Laten we dat samen doen! Schrijf op wat je denkt dat er gaat gebeuren. Vergeet hierbij niet het doel van het onderzoek. Kijk daarom eerst goed naar wat we willen ontdekken. Maak daarna de zin af, zodat we onze verwachting duidelijk hebben verwoord. ');
-    this.experimentExp = this.ArrayOfStrings('Het is nu tijd om het experiment uit te voeren. Wat spannend! De bedoeling is dat we nu onze verwachting gaan testen. Klopt onze verwachting wel? Of gebeurt er totaal iets anders?  Gebruik de simulatie om er achter te komen of je verwachting klopt!');
-    this.analyzeExp = this.ArrayOfStrings('We gaan nu kijken of wat er gebeurde hetzelfde is als wat we dachten dat er ging gebeuren. Wat gebeurde er aan het eind? Was onze verwachting uteindelijk waar of niet waar?  ');
-    this.proofExp = this.ArrayOfStrings('Elke wetenschapper moet bewijzen wanneer ze zeggen dat er iets gebeurt is. Dit is de reden dat we alle resultaten hadden opgeschreven tijdens het experimenteren. Voor deze opdracht, kies alle resultaten die onze beschrijving van de gebeurtenis bewijzen. Alle onnodige experimenten hoef je dus niet te selecteren! ');
+    this.experimentExp = this.ArrayOfStrings('Het is nu tijd om het experiment uit te voeren. Wat spannend! De bedoeling is dat we nu onze verwachting gaan testen. Klopt onze verwachting wel? Of gebeurt er totaal iets anders?  Gebruik het experiment om er achter te komen of je verwachting klopt!');
+    this.analyzeExp = this.ArrayOfStrings('We gaan nu kijken of wat er gebeurde hetzelfde is als wat we dachten dat er ging gebeuren. Wat gebeurde er aan het eind? Was onze verwachting uteindelijk waar of niet waar? Klik op de juiste antwoorden in de vakjes onderin.');
+    this.proofExp = this.ArrayOfStrings('Als je wilt laten zien dat iets echt gebeurt is, moet je de goede resultaten kiezen die dat laten zien. Gelukking hebben we alles opgeschreven. Nu moet je alleen de juiste kiezen die onze bescrijving van er gebeurde bewijzen. Resultaten die niet helpen, hoef je niet te kiezen!');
 
-    this.variableOptions = [
-      'hoogte van de bal',
-      'massa van de bal',
-      'de kleur van de bal',
-      'tijd voordat de bal de grond raakt',
-      'snelheid als de bal de grond raakt'
-    ];
+
+    this.indVariableOptions = ['hoogte van de bal', 'massa van de bal', 'kleur van de bal']
+      this.depVariableOptions = ['tijd voordat de bal de grond raakt', 'snelheid als de bal de grond raakt'];
+
+    this.variableOptions = this.indVariableOptions.concat(this.depVariableOptions);
 
     //the given hyptohesis variables by the user
     this.givenIndVar = undefined;
     this.givenDepVar = undefined;
     this.givenIndVarChange = undefined;
     this.givenDepVarChange = undefined;
-    
+
     //the given analyze variables by the user
     this.givenIndVarCheck = undefined;
     this.givenDepVarCheck = undefined;
@@ -29,20 +27,23 @@ class DifferentSimulationVariables {
 
     this.givenHypothesis = ['No hypothesis has been set yet', 'this text is a placeholder'];
     this.givenEvidence = ['No evidence has been selected', 'This text is a placeholder'];
+
+    //A lists of list with the following data: Weight, Height, Color, TimeToDrop, Velocity
+    this.results = [];
   }
 
   setHypothesis() {
     this.givenHypothesis = this.ArrayOfStrings("Als ik de " + this.givenIndVar + " " + this.givenIndVarChange + ", dan zal de " + this.givenDepVar + " " + this.givenDepVarChange + ".");
   }
-  
-  setEvidence(){
+
+  setEvidence() {
     this.givenEvidence = this.ArrayOfStrings("Toen ik de " + this.givenIndVarCheck + " " + this.givenIndVarChangeCheck + ", ging de " + this.givenDepVarCheck + " " + this.givenDepVarChangeCheck + ".");
   }
 
   getHypothesis() {
     return this.givenHypothesis;
   }
-  
+
   getEvidence() {
     return this.givenEvidence;
   }
@@ -62,7 +63,7 @@ class DifferentSimulationVariables {
   getGivenIndVarChange() {
     return this.givenIndVarChange;
   }
-  
+
   getGivenIndVarCheck() {
     return this.givenIndVarCheck;
   }
@@ -81,6 +82,18 @@ class DifferentSimulationVariables {
 
   getHypothesisCheck() {
     return this.hypothesisCheck;
+  }
+
+  getIndVariableOptions() {
+    return this.indVariableOptions;
+  }
+
+  getDepVariableOptions() {
+    return this.depVariableOptions;
+  }
+
+  getVariableOptions() {
+    return this.variableOptions;
   }
 
 
@@ -103,7 +116,7 @@ class DifferentSimulationVariables {
     case 'givenDepVarChange':
       this.givenDepVarChange = selectedValue;
       break;
-      
+
     case 'givenIndVarCheck':
       this.givenIndVarCheck = selectedValue;
       break;
@@ -119,10 +132,11 @@ class DifferentSimulationVariables {
     case 'givenDepVarChangeCheck':
       this.givenDepVarChangeCheck = selectedValue;
       break;
+
     case 'hypothesisCheck':
       this.hypothesisCheck = selectedValue;
       break;
-      
+
     default:
       console.log('Unknown dropdown type, something is going very wrong');
       break;
@@ -242,7 +256,19 @@ class HeightTimeSim extends DifferentSimulationVariables {
     this.reqIndVar = 'hoogte van de bal';
     this.reqDepVar = 'tijd voordat de bal de grond raakt';
     this.exerciseNumber = '1';
-    this.results = [];
+    this.simExp = super.ArrayOfStrings('Hallo! Ik ben Evan, en doe al 30 jaar onderzoek naar wetenschap en natuur. Ik wil jullie graag laten zien wat je allemaal doet als wetenschapper. Daarom gaan we vandaag kijken hoe het is om een een wetenschapper te zijn. Wat spannend! Als eerst willen we onderzoeken of het langer of korter duurt voordat de bal de grond raakt, als je het van een andere hoogte laat vallen. We gaan eerst kijken wat we verwachten, daana zullen we het experiment doen. Je kan onderaan al zien hoe het experiment er ongeveer uit gaan zien. Na experiment zullen we ook nog bewijzen wat we zagen. Als alles duidelijk is, laten we dan aan de slag gaan!');
+  }
+
+  getReqIndVar() {
+    return this.reqIndVar;
+  }
+
+  getReqDepVar() {
+    return this.reqDepVar;
+  }
+  
+  getSimExp(){
+    return this.simExp;
   }
 }
 
@@ -253,5 +279,18 @@ class HeightVelocitySim extends DifferentSimulationVariables {
     this.reqIndVar = 'hoogte van de bal';
     this.reqDepVar = 'snelheid als de bal de grond raakt';
     this.exerciseNumber = '2';
+    this.simExp = super.ArrayOfStrings('Ik moet hier nog een leuk verhaaltje schrijven');
+  }
+  
+  getSimExp(){
+    return this.simExp;
+  }
+
+  getReqIndVar() {
+    return this.reqIndVar;
+  }
+
+  getReqDepVar() {
+    return this.reqDepVar;
   }
 }

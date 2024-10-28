@@ -1,11 +1,13 @@
 class HypothesisPhase {
-  constructor(drawBackgroundObjects, currentSim, nextPhaseMethod) {
+  constructor(drawBackgroundObjects, currentSim, adaptiveFeedback, nextPhaseMethod, previousPhaseMethod) {
     this.drawBackgroundObjects = drawBackgroundObjects;
     this.currentSim = currentSim;
+    this.adaptiveFeedback = adaptiveFeedback;
     this.nextPhaseMethod = nextPhaseMethod;
+    this.previousPhaseMethod = previousPhaseMethod;
 
     // Define options for dropdown menus
-    this.variableOptions = this.currentSim.variableOptions;
+    this.variableOptions = this.currentSim.getVariableOptions();
 
     this.dependentChanges = ['meer laat worden', 'minder laat worden', 'hetzelfde laat'];
     this.independentChanges = ['meer worden', 'minder worden', 'hetzelfde blijven'];
@@ -15,6 +17,7 @@ class HypothesisPhase {
 
     this.allSelected = false;
     this.nextButton = this.createNextButton();
+    this.previousButton = this.createPreviousButton();
   }
 
   createDropdowns() {
@@ -26,7 +29,11 @@ class HypothesisPhase {
   }
 
   createNextButton() {
-    return this.drawBackgroundObjects.createButton('Ga naar experiment', this.removeDropdown.bind(this), 895, 650);
+    return this.drawBackgroundObjects.createButton('Ga naar experiment', this.doNextButton.bind(this), 895, 650, '300px', '60px');
+  }
+
+  createPreviousButton() {
+    return this.drawBackgroundObjects.createButton('Ga terug', this.doPreviousButton.bind(this), 695, 650, '150px', '60px');
   }
 
   drawHypothesisPhase() {
@@ -34,7 +41,7 @@ class HypothesisPhase {
     this.drawExplanation();
     this.drawGoal();
     this.drawHypothesisBox(400, 460);
-    
+
     this.updateAllSelected();
     this.updateNextButtonStyle();
   }
@@ -81,9 +88,9 @@ class HypothesisPhase {
   updateAllSelected() {
     // Check if all dropdowns have a selection to enable/disable the next button
     this.allSelected = this.currentSim.getGivenIndVar() &&
-                       this.currentSim.getGivenDepVar() &&
-                       this.currentSim.getGivenIndVarChange() &&
-                       this.currentSim.getGivenDepVarChange();
+      this.currentSim.getGivenDepVar() &&
+      this.currentSim.getGivenIndVarChange() &&
+      this.currentSim.getGivenDepVarChange();
   }
 
   updateNextButtonStyle() {
@@ -93,19 +100,49 @@ class HypothesisPhase {
     }
   }
 
-  removeDropdown() {
+  doNextButton() {
+
     this.currentSim.setHypothesis();
 
     if (this.allSelected) {
-      // Remove dropdowns from DOM
-      this.dropdownDependentVar?.remove();
-      this.dropdownDependentChange?.remove();
-      this.dropdownIndependentVar?.remove();
-      this.dropdownIndependentChange?.remove();
-      this.nextButton?.remove();
+      const reqIndVar = this.currentSim.getReqIndVar();
+      const reqDepVar = this.currentSim.getReqDepVar();
+      const givenIndVar = this.currentSim.getGivenIndVar();
+      const givenDepVar = this.currentSim.getGivenDepVar();
+      const indVariableOptions = this.currentSim.getIndVariableOptions();
+      const depVariableOptions = this.currentSim.getDepVariableOptions();
+      
+      if (this.adaptiveFeedback.giveAdaptiveFeedbackHypothesisPhase(reqIndVar, reqDepVar, givenIndVar, givenDepVar, indVariableOptions, depVariableOptions)) {
+        // Remove dropdowns from DOM
+        this.hideAllDomObjects();
 
-      // Proceed to the next phase
-      this.nextPhaseMethod();
+        // Proceed to the next phase
+        this.nextPhaseMethod();
+      }
     }
+  }
+
+  doPreviousButton() {
+    this.hideAllDomObjects();
+    console.log('It wants to go back, but first you need to make a start screen');
+    this.previousPhaseMethod();
+  }
+
+  hideAllDomObjects() {
+    this.dropdownDependentVar.hide();
+    this.dropdownDependentChange.hide();
+    this.dropdownIndependentVar.hide();
+    this.dropdownIndependentChange.hide();
+    this.nextButton.hide();
+    this.previousButton.hide();
+  }
+  
+  unhide(){
+    this.dropdownDependentVar.show();
+    this.dropdownDependentChange.show();
+    this.dropdownIndependentVar.show();
+    this.dropdownIndependentChange.show();
+    this.nextButton.show();
+    this.previousButton.show();
   }
 }

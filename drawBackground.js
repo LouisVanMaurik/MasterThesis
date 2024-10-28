@@ -49,6 +49,7 @@ class DrawBackgroundObjects {
   // Draws each line of text in the text box
   drawTextLines(stringArray, xpos, ypos, textSizeValue) {
     textStyle(NORMAL);
+
     stringArray.forEach((line, index) => {
       text(line, xpos + 10, ypos + 55 + index * (textSizeValue + 5));
     }
@@ -65,8 +66,8 @@ class DrawBackgroundObjects {
   // Helper method to initialize a dropdown with options and styles
   initializeDropdown(dropdown, options, dropdownString, xpos, ypos, currentSim) {
     // Set dropdown position
-    dropdown.position(xpos, ypos); 
-    
+    dropdown.position(xpos, ypos);
+
     //Adds a default option but makes sure it is disabled
     const defaultOption = '-- Maak een keuze --';
     dropdown.option(defaultOption);
@@ -88,26 +89,26 @@ class DrawBackgroundObjects {
   }
 
   // Creates a button that triggers a callback when clicked
-  createButton(title, callback, xpos, ypos) {
-    const nextButton = createButton(title);
-    nextButton.position(xpos, ypos);
-    nextButton.mousePressed(callback);
+  createButton(title, callback, xpos, ypos, buttonWidth, buttonHeight) {
+    const button = createButton(title);
+    button.position(xpos, ypos);
+    button.mousePressed(callback);
 
-    this.styleButton(nextButton);
-    this.addButtonHoverEffect(nextButton);
+    this.styleButton(button, buttonWidth, buttonHeight);
+    this.addButtonHoverEffect(button);
 
-    return nextButton;
+    return button;
   }
 
   // Helper method to apply styles to the button
-  styleButton(button) {
+  styleButton(button, buttonWidth, buttonHeight) {
     const buttonColor = '#808080';
     const backgroundGradient = 'linear-gradient(to bottom, #A9A9A9, #696969)';
 
     button.style('font-size', '24px');
     button.style('font-weight', 'bold');
-    button.style('width', '300px');
-    button.style('height', '60px');
+    button.style('width', buttonWidth);
+    button.style('height', buttonHeight);
     button.style('background', backgroundGradient);
     button.style('color', '#FFFFFF');
     button.style('border', '2px solid black');

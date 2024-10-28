@@ -1,8 +1,10 @@
 class ExperimentPhase {
-  constructor(drawBackgroundObjects, currentSim, nextPhaseMethod) {
+  constructor(drawBackgroundObjects, currentSim, adaptiveFeedback, nextPhaseMethod, previousPhaseMethod) {
     this.drawBackgroundObjects = drawBackgroundObjects;
     this.currentSim = currentSim;
+    this.adaptiveFeedback = adaptiveFeedback;
     this.nextPhaseMethod = nextPhaseMethod;
+    this.previousPhaseMethod = previousPhaseMethod;
 
     //state of the experiment
     this.isRunning = false;
@@ -42,10 +44,15 @@ class ExperimentPhase {
     this.ballOntheGround = false;
     this.experimentButton = this.createExperimentButton(this.doExperimentButton.bind(this));
     this.nextButton = this.createNextButton();
+    this.previousButton = this.createPreviousButton();
   }
 
   createNextButton() {
-    return this.drawBackgroundObjects.createButton('Ga naar controle', this.doNextButton.bind(this), 895, 1100);
+    return this.drawBackgroundObjects.createButton('Ga naar controle', this.doNextButton.bind(this), 895, 1100, '300px', '60px');
+  }
+
+  createPreviousButton() {
+    return this.drawBackgroundObjects.createButton('Ga terug', this.doPreviousButton.bind(this), 695, 1100, '150px', '60px');
   }
 
   drawExperimentPhase() {
@@ -57,16 +64,6 @@ class ExperimentPhase {
     this.drawExperiment();
     this.drawButtonBoxes();
     this.drawResultBox();
-    
-    //if (this.isRunning || this.ballOntheGround){
-    //  console.log('I should make the button grey');
-    //  this.experimentButton.style('linear-gradient(to bottom, #A9A9A9, #696969)');
-    //} else {
-    //   console.log('I should make the button grey');
-    //   console.log('isrunning = ' + this.isRunning);
-    //   console.log('ballOnTheGround = ' + this.ballOntheGround);
-    //   this.experimentButton.style('background', 'linear-gradient(to bottom, #FFB347, #FF8000)'); // Gradient effect for 3D look
-    //}
 
     if (this.didOneExperiment) {
       this.nextButton.style('background', 'linear-gradient(to bottom, #FFB347, #FF8000)'); // Gradient effect for 3D look
@@ -298,24 +295,52 @@ class ExperimentPhase {
   }
 
   doNextButton() {
-    if (this.didOneExperiment) {
+    if (this.didOneExperiment && 
+      this.adaptiveFeedback.giveAdaptiveFeedbackExperimentPhase(
+      this.currentSim.results, this.currentSim.reqIndVar, this.currentSim.indVariableOptions.length)) {
       //Removes all experiment option buttons
-      this.weightOneButton.remove();
-      this.weightFiveButton.remove();
-      this.weightTenButton.remove();
-      this.hightTenButton.remove();
-      this.hightTwentyButton.remove();
-      this.hightThirtyButton.remove();
-      this.redBallButton.remove();
-      this.blueBallButton.remove();
-      this.orangeBallButton.remove();
-
-      this.nextButton.remove();
-      this.experimentButton.remove();
+      this.hideAllDomObjects();
 
       // Proceed to the next phase
       this.nextPhaseMethod();
     }
+  }
+
+  doPreviousButton() {
+    this.hideAllDomObjects();
+    this.previousPhaseMethod()
+  }
+
+  hideAllDomObjects() {
+    this.weightOneButton.hide();
+    this.weightFiveButton.hide();
+    this.weightTenButton.hide();
+    this.hightTenButton.hide();
+    this.hightTwentyButton.hide();
+    this.hightThirtyButton.hide();
+    this.redBallButton.hide();
+    this.blueBallButton.hide();
+    this.orangeBallButton.hide();
+
+    this.nextButton.hide();
+    this.previousButton?.hide();
+    this.experimentButton.hide();
+  }
+  
+  unhide() {
+    this.weightOneButton.show();
+    this.weightFiveButton.show();
+    this.weightTenButton.show();
+    this.hightTenButton.show();
+    this.hightTwentyButton.show();
+    this.hightThirtyButton.show();
+    this.redBallButton.show();
+    this.blueBallButton.show();
+    this.orangeBallButton.show();
+
+    this.nextButton.show();
+    this.previousButton?.show();
+    this.experimentButton.show();
   }
 
   setBallcolor(colorString) {
