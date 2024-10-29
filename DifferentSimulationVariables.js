@@ -256,7 +256,14 @@ class HeightTimeSim extends DifferentSimulationVariables {
     this.reqIndVar = 'hoogte van de bal';
     this.reqDepVar = 'tijd voordat de bal de grond raakt';
     this.exerciseNumber = '1';
-    this.simExp = super.ArrayOfStrings('Hallo! Ik ben Evan, en doe al 30 jaar onderzoek naar wetenschap en natuur. Ik wil jullie graag laten zien wat je allemaal doet als wetenschapper. Daarom gaan we vandaag kijken hoe het is om een een wetenschapper te zijn. Wat spannend! Als eerst willen we onderzoeken of het langer of korter duurt voordat de bal de grond raakt, als je het van een andere hoogte laat vallen. We gaan eerst kijken wat we verwachten, daana zullen we het experiment doen. Je kan onderaan al zien hoe het experiment er ongeveer uit gaan zien. Na experiment zullen we ook nog bewijzen wat we zagen. Als alles duidelijk is, laten we dan aan de slag gaan!');
+    this.simExp = this.setSimExp();
+  }
+  
+  setSimExp() {
+    let simExp = super.ArrayOfStrings('Hoi! Ik ben Evan, en ik werk al heel lang met wetenschap en natuur. Vandaag wil ik jullie laten zien hoe het is om een wetenschapper te zijn. Spannend, hè? We gaan samen een experiment doen! We willen uitzoeken of de bal langer of korter onderweg is naar de grond als we hem van verschillende hoogtes laten vallen.');
+    simExp.push(' ');
+    simExp =  simExp.concat(super.ArrayOfStrings('Eerst gaan we bedenken wat we denken dat er gebeurt. Daarna gaan we het echt uitproberen. Onderin kun je al zien hoe ons proefje eruit gaat zien. Na het experiment bekijken we samen wat we hebben gezien. Laten we beginnen!'));
+    return simExp;
   }
 
   getReqIndVar() {
@@ -266,8 +273,8 @@ class HeightTimeSim extends DifferentSimulationVariables {
   getReqDepVar() {
     return this.reqDepVar;
   }
-  
-  getSimExp(){
+
+  getSimExp() {
     return this.simExp;
   }
 }
@@ -279,10 +286,18 @@ class HeightVelocitySim extends DifferentSimulationVariables {
     this.reqIndVar = 'hoogte van de bal';
     this.reqDepVar = 'snelheid als de bal de grond raakt';
     this.exerciseNumber = '2';
-    this.simExp = super.ArrayOfStrings('Ik moet hier nog een leuk verhaaltje schrijven');
+    this.simExp = this.setSimExp();
   }
-  
-  getSimExp(){
+
+  setSimExp() {
+    let simExp = super.ArrayOfStrings(' Wat ben je lekker bezig. Je lijkt wel een echte wetenschapper op deze manier. Ga zo door! ');
+    simExp.push(' ');
+    simExp =  simExp.concat(super.ArrayOfStrings('Voor het volgende experiment willen we niet alleen kijken hoe lang het duurt voordat de bal de grond raakt, maar juist hoe snel de bal gaat als hij de grond raakt. We willen ook weten of de bal sneller gaat als we hem van een hogere plek laten vallen. Dus, laten we het experiment nog een keer doen!'));
+    simExp.push(' ');
+    return simExp;
+  }
+
+  getSimExp() {
     return this.simExp;
   }
 
