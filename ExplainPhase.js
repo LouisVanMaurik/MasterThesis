@@ -2,7 +2,6 @@ class ExplainPhase {
   constructor(drawBackgroundObjects, currentSim, nextPhaseMethod) {
     this.drawBackgroundObjects = drawBackgroundObjects;
     this.currentSim = currentSim;
-    console.log(currentSim);
     this.nextPhaseMethod = nextPhaseMethod;
 
     this.nextButton = this.createNextButton();
@@ -31,7 +30,6 @@ class ExplainPhase {
 
   drawExplanation() {
     const explanation = this.currentSim.getSimExp();
-    console.log(explanation);
     const titleExercise = 'Opdracht ' + this.currentSim.exerciseNumber;
     this.drawBackgroundObjects.drawTextBox(titleExercise, explanation, 400, 150);
   }

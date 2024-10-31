@@ -14,11 +14,19 @@ class ProofPhase {
     this.createCheckBoxes();
 
     this.nextButton = this.createNextButton();
+    this.nextButtonXpos = 895;
+    this.nextButtonYpos = 590;
     this.previousButton = this.createPreviousButton();
+    this.previousButtonXpos = 695;
+    this.previousButtonYpos = 590;
   }
 
   createNextButton() {
-    return this.drawBackgroundObjects.createButton('Volgende', this.doNextButton.bind(this), 895, 650, '300px', '60px');
+    return this.drawBackgroundObjects.createButton('Volgende', this.doNextButton.bind(this), this.nextButtonXpos, this.nextButtonYpos, '300px', '60px');
+  }
+
+  createPreviousButton() {
+    return this.drawBackgroundObjects.createButton('Ga terug', this.doPreviousButton.bind(this), this.previousButtonXpos, this.previousButtonYpos, '150px', '60px');
   }
 
   createCheckBoxes() {
@@ -30,7 +38,7 @@ class ProofPhase {
     const xpos = this.ProofBoxXpos + 30; // Move 5 pixels to the left
     const ypos = this.ProofBoxYpos + 65; // Move 20 pixels down
 
-    // Draw each checkbox and place it inside the canvas 
+    // Draw each checkbox and place it inside the canvas
     // NOTE: It lopes from the length of checkboxes. If there are already some checkboxes made, it should not make new one on top of it
     //       This makes sure you can add results, even though the proof class was already created
     for (let i = this.checkboxes.length; i < this.currentSim.results.length; i++) {
@@ -45,24 +53,13 @@ class ProofPhase {
     }
   }
 
-  createPreviousButton() {
-    return this.drawBackgroundObjects.createButton('Ga terug', this.doPreviousButton.bind(this), 695, 650, '150px', '60px');
-  }
-
   // Main method to draw the analyze phase
   drawProofPhase() {
     this.drawTitle();
     this.drawExerciseBox();
     this.drawOutcomeBox();
     this.drawProofBox();
-
-    //TEST CODE TO SEE WHICH CHECKBOXES ARE SELECTED
-    //let theString = '';
-    //for (let i = 0; i < this.checkboxes.length; i++) {
-    //  let isChecked = this.checkboxes[i].checked();  // Check if the checkbox is checked
-    //  theString = theString + '   ' + i + ': ' + isChecked;
-    //}
-    //console.log(theString);
+    this.updateButtons();
   }
 
   // Draws the title for the analyze phase
@@ -142,8 +139,11 @@ class ProofPhase {
   }
 
   doNextButton() {
-    this.hideAllDomObjects();
-    this.nextPhaseMethod();
+    if (this.checkOneIsChecked() && this.adaptiveFeedback.giveAdaptiveFeedbackProofPhase(
+      this.currentSim.results, this.currentSim.getReqIndVar(), this.currentSim.getIndVariableOptions(), this.checkboxes)) {
+      this.hideAllDomObjects();
+      this.nextPhaseMethod();
+    }
   }
 
   hideAllDomObjects() {
@@ -171,11 +171,28 @@ class ProofPhase {
     this.previousButton.show();
   }
 
-  // // Method to check the status of each checkbox
-  //checkCheckboxesStatus() {
-  //  for (let i = 0; i < this.checkboxes.length; i++) {
-  //    let isChecked = this.checkboxes[i].checked();  // Check if the checkbox is checked
-  //    console.log(`Checkbox ${i+1} is ${isChecked ? 'checked' : 'unchecked'}`);
-  //  }
-  //}
+  //The postions and coloring of the button is done over and over, as it can be that there are more results or that all boxes get unselected
+  updateButtons() {
+    //Update the color of the nextbutton
+    if (this.checkOneIsChecked()) {
+      this.nextButton.style('background', 'linear-gradient(to bottom, #FFB347, #FF8000)'); //Make orange
+    } else {
+      this.nextButton.style('background', 'linear-gradient(to bottom, #A9A9A9, #696969)'); //Make gray
+    }
+
+    //Update the position of the previousButton and the nextButton based on the length of the results
+    this.nextButton.position(this.nextButtonXpos, this.nextButtonYpos  + (30*this.currentSim.results.length));
+    this.previousButton.position(this.previousButtonXpos, this.previousButtonYpos  + (30*this.currentSim.results.length));
+  }
+
+  // Method to check the status of each checkbox
+  checkOneIsChecked() {
+    for (let i = 0; i < this.checkboxes.length; i++) {
+      let isChecked = this.checkboxes[i].checked();  // Check if the checkbox is checked
+      if (isChecked) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

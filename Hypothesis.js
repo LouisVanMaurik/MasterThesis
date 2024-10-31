@@ -96,7 +96,7 @@ class HypothesisPhase {
   updateNextButtonStyle() {
     // Update next button style when all selections are made
     if (this.allSelected) {
-      this.nextButton.style('background', 'linear-gradient(to bottom, #FFB347, #FF8000)'); // Gradient effect for 3D look
+      this.nextButton.style('background', 'linear-gradient(to bottom, #FFB347, #FF8000)'); // Gradient orange effect
     }
   }
 

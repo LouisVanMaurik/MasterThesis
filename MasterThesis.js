@@ -28,13 +28,15 @@ function setup() {
   drawBackgroundObjects = new DrawBackgroundObjects(textBoxWidth, differentSimulationVariables);
   heightTimeSim = new HeightTimeSim(textBoxWidth);
   heightVelocitySim = new HeightVelocitySim(textBoxWidth);
+  massTimeSim = new MassTimeSim(textBoxWidth);
   adaptiveFeedback = new AdaptiveFeedback(drawBackgroundObjects);
-  
+
   currentSim = heightTimeSim;
 }
 
 function draw() {
   drawBackgroundObjects.drawBackground();
+  drawExerciseNumber();
   drawCurrentPhase();
 }
 
@@ -109,12 +111,16 @@ function getNextPhase(phase) {
   case 'analyze':
     return 'proof';
   case 'proof':
-     currentSim = heightVelocitySim; 
-     explainPhase = undefined;
-     hypothesisPhase = undefined; 
-     experimentPhase = undefined;
-     analyzePhase = undefined;
-     proofPhase = undefined;
+    if (currentSim === heightTimeSim){
+    currentSim = heightVelocitySim;
+    } else if (currentSim === heightVelocitySim){
+      currentSim = massTimeSim;
+    }
+    explainPhase = undefined;
+    hypothesisPhase = undefined;
+    experimentPhase = undefined;
+    analyzePhase = undefined;
+    proofPhase = undefined;
     return 'explain';
   default:
     console.error('Unexpected phase:', phase);
@@ -136,4 +142,11 @@ function getPreviousPhase(phase) {
     console.error('Unexpected phase:', phase);
     return phase;
   }
+}
+
+function drawExerciseNumber() {
+  fill(255);
+  textSize(50);
+  textStyle(BOLD);
+  text(currentSim.exerciseNumber + '/3', width-100, 70);
 }

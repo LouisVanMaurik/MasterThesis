@@ -11,10 +11,6 @@ class AdaptiveFeedback {
     this.checkDepGoalAnalyzeCount = 0;
   }
 
-  sayHello() {
-    console.log('Hello');
-  }
-
   //checks if all adaptive criteria are met by calling each checks function in the hypothesis phase
   giveAdaptiveFeedbackHypothesisPhase(reqIndVar, reqDepVar, givenIndVar, givenDepVar, indVariableOptions, depVariableOptions) {
     return this.checkIndCorrect(givenIndVar, indVariableOptions, reqIndVar) &&
@@ -100,24 +96,24 @@ class AdaptiveFeedback {
     }
   }
 
-  //checks if all adaptive criteria are met by calling each checks function in the experiment phase
+  //checks if all experiment criteria are met by calling each checks function in the experiment phase
   giveAdaptiveFeedbackExperimentPhase(results, reqIndVar, amountOfDepVars) {
     // results is a lists of list with the following data in this particulair order: Weight, Height, Color, TimeToDrop, Velocity
     let indIndex = this.getIndVarIndex(reqIndVar);
     return  this.checkMoreThenOne(results) &&
-      this.checkVariedInd(results, indIndex, reqIndVar)
-      && this.checkVariedIndAndControlled(results, indIndex, amountOfDepVars, reqIndVar);
+      this.checkVariedInd(results, indIndex, reqIndVar) &&
+      this.checkVariedIndAndControlled(results, indIndex, amountOfDepVars, reqIndVar);
   }
 
   //return the index for the list depending on what the independent variable is
   getIndVarIndex(reqIndVar) {
     switch (reqIndVar) {
+    case 'massa van de bal':
+      return 0;
     case 'hoogte van de bal':
       return 1;
-    case 'massa van de bal':
-      return 2;
     case 'kleur van de bal':
-      return 3;
+      return 2;
     default:
       console.log('The getIndVarIndex is broken, it got a unkown reqIndVar and does not know which index to return');
       return undefined;
@@ -126,7 +122,7 @@ class AdaptiveFeedback {
 
   checkMoreThenOne(results) {
     if (results.length < 2) {
-      let text = "Als je een experiment doet, wil je dingen steeds een beetje anders maken. Daarom wil je meerdere experimenten doen. Stel je voor dat je steeds dezelfde bal laat vallen. Dan ontdek je niet wat er gebeurt als je bijvoorbeeld een zwaardere bal hebt! Door iets te veranderen, zoals het gewicht of de hoogte, kun je zien hoe dat het experiment beïnvloedt.";
+      let text = "Bij een experiment wil je steeds iets veranderen. Zo ontdek je meer! Als je steeds dezelfde bal laat vallen, leer je weinig nieuws. Maar door bijvoorbeeld een zwaardere bal te gebruiken of de hoogte te veranderen, kun je zien wat er dan gebeurt.";
       this.drawBackgroundObjects.createPopUp('Niet genoeg experimenten!', text);
       return false;
     } else {
@@ -136,7 +132,6 @@ class AdaptiveFeedback {
 
   //Check if the independent variable has been changed
   checkVariedInd(results, index, reqIndVar) {
-    console.log('I just got into the checkvariedind function');
     if (results.length === 0) {
       return false;  // No data to compare
     }
@@ -151,14 +146,10 @@ class AdaptiveFeedback {
       }
     }
     if (this.checkVariedIndCount === 0) {
-      console.log('I am giving the first warning regarding changing independent variable');
-
       this.checkVariedIndCount++;
       let text = "Kijk nog is goed naar wat we willen ontdekken en wat we verwachten. Wat moeten we aanpassen in het experiment om daar achter te komen?";
       this.drawBackgroundObjects.createPopUp('Wat wilden we ontdekken?', text);
     } else {
-      console.log('I am giving the second warning regarding changing independent variable');
-
       let text = "We willen kijken wat voor effect de '" + reqIndVar + "' heeft. Pas daarom de '" + reqIndVar + "' in het experiment!";
       this.drawBackgroundObjects.createPopUp('Wat wilden we ontdekken?', text);
     }
@@ -175,7 +166,6 @@ class AdaptiveFeedback {
         notIndexes.push(i);
       }
     }
-    console.log(notIndexes);
 
     // Loop through each result and compare with each other
     for (let i = 0; i < results.length; i++) {
@@ -201,10 +191,10 @@ class AdaptiveFeedback {
       let text = "Nog niet helemaal. Laat ik het in wat kleinere stapjes uitleggen. Klik eerst op test. Pas daarna alleen de '" + reqIndVar + "' aan. Klik dan weer op test. Nu heb je twee experimenten die exact hetzelfde zijn, naast de '" + reqIndVar + "'.";
       this.drawBackgroundObjects.createPopUp('Pas maar 1 ding tegelijk aan:', text);
     }
-      return false;
+    return false;
   }
 
-
+  //checks if all adaptive criteria are met by calling each checks function in the experiment phase
   giveAdaptiveFeedbackAnalyzePhase(givenIndVarChangeCheck, givenDepVarChangeCheck, reqDepVar, reqIndVar) {
     return this.indIsGoalAnalyze(givenIndVarChangeCheck, reqIndVar) &&
       this.depIsGoalAnalyze(givenDepVarChangeCheck, reqDepVar);
@@ -248,8 +238,73 @@ class AdaptiveFeedback {
   //Checks if the description of what happend is true
   checkIsEqualToWhatHappend() {
   }
-  
+
   //Checks if the stated hypothesis was correct or not
-  checkIsHypothesisCorrect(){
+  checkIsHypothesisCorrect() {
+  }
+
+
+  //checks if all proof criteria are met by calling each checks function in the experiment phase
+  giveAdaptiveFeedbackProofPhase(results, reqIndVar, indVariableOptions, checkboxesList) {
+    console.log('I just got in the adaptiveFeedbackProofPhase function. CheckboxesList = ' + checkboxesList);
+    let indIndex = this.getIndVarIndex(reqIndVar);
+    let checkedCheckboxesIndexList = this.indexListCheckedBoxes(checkboxesList);
+    return  this.moreThenOneOptionChecked(checkedCheckboxesIndexList) &&
+            this.independentCheckBosIsChanged (results, indIndex, indVariableOptions, checkedCheckboxesIndexList) &&
+            this.independentCheckBosIsChangedAndControlled(results, indIndex, indVariableOptions.length, reqIndVar, checkedCheckboxesIndexList);
+  }
+
+  indexListCheckedBoxes(checkboxesList) {
+    let checkedCheckboxesIndexList = [];
+    console.log('I just got in the indexListCheckedBoxes function. CheckboxesList = ' + checkboxesList);
+
+    for (let i = 0; i < checkboxesList.length; i++) {
+      // Check if the checkbox is checked and add the index to a this list
+      if (checkboxesList[i].checked()) {
+        checkedCheckboxesIndexList.push(i);
+      }
+    }
+    return checkedCheckboxesIndexList;
+  }
+
+  //checks if there are atleast 2 boxes selected, otherwise return false
+  moreThenOneOptionChecked(checkedCheckboxesIndexList) {
+    if (checkedCheckboxesIndexList.length > 1) {
+      return true;
+    } else {
+      let text = "Momenteel heb je maar 1 resultaat geselecteerd. Om te bewijzen dat er iets veranderd is in het experiment, heb je er minstens twee nodig.";
+      this.drawBackgroundObjects.createPopUp('Niet genoeg bewijs!', text);
+      return false;
+    }
+  }
+
+  independentCheckBosIsChanged(results, indIndex, indVariableOptions, checkedCheckboxesIndexList) {
+    for (let i = 0; i < checkedCheckboxesIndexList.length; i++) {
+      for (let j = i+1; j < checkedCheckboxesIndexList.length; j++) {
+        //checks if the independent variable are the same. If so, return false and give an error message
+        if (results[checkedCheckboxesIndexList[i]][indIndex] === results[checkedCheckboxesIndexList[j]][indIndex]) {
+          let text = "Momenteel heb je resultaten geselecteerd waartussen soms de " + indVariableOptions[indIndex] + 'hetzelfde is. Zorg ervoor dat de ' + indVariableOptions[indIndex] + 'verschilt tussen de aangevinkte resultaten!';
+          this.drawBackgroundObjects.createPopUp('De ' + indVariableOptions[indIndex] + ' is hetzelfde!', text);
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+  
+  independentCheckBosIsChangedAndControlled(results, indIndex, amountOfDepVars, reqIndVar, checkedCheckboxesIndexList){
+    let checkedResults = [];
+    for (let i = 0; i > checkedCheckboxesIndexList; i++){
+    checkedResults.push(results[checkedCheckboxesIndexList[i]]);
+    }
+    
+    //if (this.checkVariedIndAndControlled(checkedResults, indIndex, amountOfDepVars, reqIndVar)){
+    //  console.log('The proof is controlled');
+    //  return true;
+    //} else {
+    //  console.log('The proof is not controlled');
+    //  return false;
+    //}
+    return true;
   }
 }

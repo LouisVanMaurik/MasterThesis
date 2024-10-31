@@ -4,11 +4,11 @@ class DifferentSimulationVariables {
     this.hypothesisExp = this.ArrayOfStrings('Als wetenschapper is het belangrijk om altijd eerst te zeggen wat we denken dat er gaat gebeuren. Laten we dat samen doen! Schrijf op wat je denkt dat er gaat gebeuren. Vergeet hierbij niet het doel van het onderzoek. Kijk daarom eerst goed naar wat we willen ontdekken. Maak daarna de zin af, zodat we onze verwachting duidelijk hebben verwoord. ');
     this.experimentExp = this.ArrayOfStrings('Het is nu tijd om het experiment uit te voeren. Wat spannend! De bedoeling is dat we nu onze verwachting gaan testen. Klopt onze verwachting wel? Of gebeurt er totaal iets anders?  Gebruik het experiment om er achter te komen of je verwachting klopt!');
     this.analyzeExp = this.ArrayOfStrings('We gaan nu kijken of wat er gebeurde hetzelfde is als wat we dachten dat er ging gebeuren. Wat gebeurde er aan het eind? Was onze verwachting uteindelijk waar of niet waar? Klik op de juiste antwoorden in de vakjes onderin.');
-    this.proofExp = this.ArrayOfStrings('Als je wilt laten zien dat iets echt gebeurt is, moet je de goede resultaten kiezen die dat laten zien. Gelukking hebben we alles opgeschreven. Nu moet je alleen de juiste kiezen die onze bescrijving van er gebeurde bewijzen. Resultaten die niet helpen, hoef je niet te kiezen!');
+    this.proofExp = this.ArrayOfStrings('Als je wilt laten zien dat iets echt gebeurt is, moet je de goede resultaten kiezen die dat laten zien. Gelukking hebben we alles opgeschreven. Nu moet je alleen de juiste kiezen die onze beschrijving van er gebeurde bewijzen. Resultaten die niet helpen, hoef je niet te kiezen!');
 
 
     this.indVariableOptions = ['hoogte van de bal', 'massa van de bal', 'kleur van de bal']
-      this.depVariableOptions = ['tijd voordat de bal de grond raakt', 'snelheid als de bal de grond raakt'];
+    this.depVariableOptions = ['tijd voordat de bal de grond raakt', 'snelheid als de bal de grond raakt'];
 
     this.variableOptions = this.indVariableOptions.concat(this.depVariableOptions);
 
@@ -262,7 +262,7 @@ class HeightTimeSim extends DifferentSimulationVariables {
   setSimExp() {
     let simExp = super.ArrayOfStrings('Hoi! Ik ben Evan, en ik werk al heel lang met wetenschap en natuur. Vandaag wil ik jullie laten zien hoe het is om een wetenschapper te zijn. Spannend, hè? We gaan samen een experiment doen! We willen uitzoeken of de bal langer of korter onderweg is naar de grond als we hem van verschillende hoogtes laten vallen.');
     simExp.push(' ');
-    simExp =  simExp.concat(super.ArrayOfStrings('Eerst gaan we bedenken wat we denken dat er gebeurt. Daarna gaan we het echt uitproberen. Onderin kun je al zien hoe ons proefje eruit gaat zien. Na het experiment bekijken we samen wat we hebben gezien. Laten we beginnen!'));
+    simExp =  simExp.concat(super.ArrayOfStrings('Eerst gaan we bedenken wat we denken dat er gebeurt. Daarna gaan we het echt uitproberen. Onderin kun je al zien hoe ons experiment eruit gaat zien. Na het experiment bekijken we samen wat we hebben gezien. Laten we beginnen!'));
     return simExp;
   }
 
@@ -307,5 +307,35 @@ class HeightVelocitySim extends DifferentSimulationVariables {
 
   getReqDepVar() {
     return this.reqDepVar;
+  }
+}
+
+class MassTimeSim extends DifferentSimulationVariables {
+  constructor(textBoxWidth) {
+    super(textBoxWidth);
+    this.goal = this.ArrayOfStrings('We willen kijken hoe de massa van de bal bepaald hoelang het duurt voordat de bal de grond raakt op de maan.');
+    this.reqIndVar = 'massa van de bal';
+    this.reqDepVar = 'tijd voordat de bal de grond raakt';
+    this.exerciseNumber = '3';
+    this.simExp = this.setSimExp();
+  }
+  
+  setSimExp() {
+    let simExp = super.ArrayOfStrings('We gaan het experiment nog 1 keer doen, maar dan kijkend hoe de massa de tijd voordat de bal de grond raakt veranderd. Net zoals bij de andere opdrachten, is dit dus op de maan. Je verwachting van wat er gebeuren is misschien dus heel anders dan wat er misschien gebeurt!');
+    simExp.push(' ');
+    simExp =  simExp.concat(super.ArrayOfStrings('P.S. Waarschijnlijk was het al redelijk duidelijk door de vorige experimenten, maar massa is een ander woord voor gewicht. Eigenlijk zijn ze ietsjes anders, maar daar hoef je nu niet over na te denken! Voor dit experiment is gewicht hetzelfde als massa.'));
+    return simExp;
+  }
+
+  getReqIndVar() {
+    return this.reqIndVar;
+  }
+
+  getReqDepVar() {
+    return this.reqDepVar;
+  }
+
+  getSimExp() {
+    return this.simExp;
   }
 }
