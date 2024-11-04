@@ -40,7 +40,7 @@ class ExplainPhase {
     this.nextPhaseMethod();
   }
   
-  unhide(){
+  unhideAllDomObjects(){
     this.nextButton.show();
     explanationVideo.show();
   }

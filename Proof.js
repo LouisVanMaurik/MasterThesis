@@ -53,7 +53,7 @@ class ProofPhase {
     }
   }
 
-  // Main method to draw the analyze phase
+  // Main method to draw the proof phase
   drawProofPhase() {
     this.drawTitle();
     this.drawExerciseBox();
@@ -121,10 +121,6 @@ class ProofPhase {
     // Draw each element in its respective column
     for (let i = 0; i < this.currentSim.results.length; i++) {
       const resultRow = this.currentSim.results[i];
-
-      text('#' + (i+1), xpos + 50, ypos + 90 + (i * rowHeight)); // First column for test number
-
-      // Draw the rest of the results in their respective columns
       for (let j = 0; j < resultRow.length; j++) {
         text(resultRow[j], xpos + colWidth * (j + 1) + 50, ypos + 90 + (i * rowHeight)); // Adjust for the additional column
       }
@@ -138,6 +134,7 @@ class ProofPhase {
     this.previousPhaseMethod();
   }
 
+  //calls the callback function of the main class to go to next phase button when checkOneIsChecked is true, and no feedback needs to be given
   doNextButton() {
     if (this.checkOneIsChecked() && this.adaptiveFeedback.giveAdaptiveFeedbackProofPhase(
       this.currentSim.results, this.currentSim.getReqIndVar(), this.currentSim.getIndVariableOptions(), this.checkboxes)) {
@@ -157,8 +154,7 @@ class ProofPhase {
     this.previousButton.hide();
   }
 
-  unhide() {
-    //WHY IS IT, THE MOMENT I UNCOMMENT THIS LINE THE CHECKBOXES DON'T WORK ANYMORE
+  unhideAllDomObjects() {
     for (let i = 0; i < this.checkboxes.length; i++) {
       this.checkboxes[i].show();
     }
@@ -171,7 +167,7 @@ class ProofPhase {
     this.previousButton.show();
   }
 
-  //The postions and coloring of the button is done over and over, as it can be that there are more results or that all boxes get unselected
+  //The postions and coloring of the button is done over and over, as it can be that there are more results added by going back or that all boxes get unselected
   updateButtons() {
     //Update the color of the nextbutton
     if (this.checkOneIsChecked()) {
@@ -185,7 +181,7 @@ class ProofPhase {
     this.previousButton.position(this.previousButtonXpos, this.previousButtonYpos  + (30*this.currentSim.results.length));
   }
 
-  // Method to check the status of each checkbox
+  // Method to check if atleast one of the checkboxes is checked, if not return false
   checkOneIsChecked() {
     for (let i = 0; i < this.checkboxes.length; i++) {
       let isChecked = this.checkboxes[i].checked();  // Check if the checkbox is checked

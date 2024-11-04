@@ -36,6 +36,7 @@ class HypothesisPhase {
     return this.drawBackgroundObjects.createButton('Ga terug', this.doPreviousButton.bind(this), 695, 650, '150px', '60px');
   }
 
+  // Main method to draw the hypothesis phase
   drawHypothesisPhase() {
     this.drawTitle();
     this.drawExplanation();
@@ -53,6 +54,7 @@ class HypothesisPhase {
     text('Onderzoeksfase: Verwachting', 350, 70);
   }
 
+  // Draws the exercise box with an explanation
   drawExplanation() {
     const explanation = this.currentSim.hypothesisExp;
     const titleExercise = 'Opdracht ' + this.currentSim.exerciseNumber + '.1';
@@ -100,19 +102,23 @@ class HypothesisPhase {
     }
   }
 
+  //calls the callback function of the main class to go to next phase when allSelected is true, and no feedback needs to be given
   doNextButton() {
 
     this.currentSim.setHypothesis();
 
     if (this.allSelected) {
+      const goal = this.currentSim.goal;
       const reqIndVar = this.currentSim.getReqIndVar();
       const reqDepVar = this.currentSim.getReqDepVar();
       const givenIndVar = this.currentSim.getGivenIndVar();
       const givenDepVar = this.currentSim.getGivenDepVar();
       const indVariableOptions = this.currentSim.getIndVariableOptions();
       const depVariableOptions = this.currentSim.getDepVariableOptions();
-      
-      if (this.adaptiveFeedback.giveAdaptiveFeedbackHypothesisPhase(reqIndVar, reqDepVar, givenIndVar, givenDepVar, indVariableOptions, depVariableOptions)) {
+      const dropdownIndependentVar = this.dropdownIndependentVar;
+      const dropdownDependentVar = this.dropdownDependentVar;
+
+      if (this.adaptiveFeedback.giveAdaptiveFeedbackHypothesisPhase(goal, reqIndVar, reqDepVar, givenIndVar, givenDepVar, indVariableOptions, depVariableOptions, dropdownIndependentVar, dropdownDependentVar)) {
         // Remove dropdowns from DOM
         this.hideAllDomObjects();
 
@@ -124,7 +130,6 @@ class HypothesisPhase {
 
   doPreviousButton() {
     this.hideAllDomObjects();
-    console.log('It wants to go back, but first you need to make a start screen');
     this.previousPhaseMethod();
   }
 
@@ -136,8 +141,8 @@ class HypothesisPhase {
     this.nextButton.hide();
     this.previousButton.hide();
   }
-  
-  unhide(){
+
+  unhideAllDomObjects() {
     this.dropdownDependentVar.show();
     this.dropdownDependentChange.show();
     this.dropdownIndependentVar.show();

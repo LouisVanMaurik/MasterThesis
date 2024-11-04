@@ -55,6 +55,7 @@ class ExperimentPhase {
     return this.drawBackgroundObjects.createButton('Ga terug', this.doPreviousButton.bind(this), 695, 1100, '150px', '60px');
   }
 
+  // Main method to draw the experiment phase
   drawExperimentPhase() {
     this.drawTitle();
     this.drawExerciseBox();
@@ -80,7 +81,7 @@ class ExperimentPhase {
 
   // Draws the exercise box with an explanation
   drawExerciseBox() {
-    const titleExercise = 'Opdracht ' + this.currentSim.exerciseNumber + '.3';
+    const titleExercise = 'Opdracht ' + this.currentSim.exerciseNumber + '.2';
     const explanation = this.currentSim.experimentExp;
     this.drawBackgroundObjects.drawTextBox(titleExercise, explanation, 400, 150);
   }
@@ -141,7 +142,8 @@ class ExperimentPhase {
 
   showResultPopup() {
     let resultString = 'Massa: ' + this.currentSelectedWeight + ', Hoogte: ' + this.currentSelectedHeight +
-      ', Kleur: ' + this.currentSelectedColor + ', Tijd: '+ this.calculateTimeToDrop() + ', Snelheid: ' + this.calculateVelocityAtDrop();
+      ', Kleur: ' + this.currentSelectedColor + '.  <br>Tijd: '+ this.calculateTimeToDrop() +
+      ', Snelheid: ' + this.calculateVelocityAtDrop() + '.' + ' <br><br><br> <i>De resultaten zijn beneden opgeschreven.</i>';
     this.drawBackgroundObjects.createPopUp('Resultaten:', resultString);
   }
 
@@ -294,8 +296,9 @@ class ExperimentPhase {
     button.style('font-size', textSize);
   }
 
+  //calls the callback function of the main class to go to next phase button when didOneExperiment is true, and no feedback needs to be given
   doNextButton() {
-    if (this.didOneExperiment && 
+    if (this.didOneExperiment &&
       this.adaptiveFeedback.giveAdaptiveFeedbackExperimentPhase(
       this.currentSim.results, this.currentSim.reqIndVar, this.currentSim.indVariableOptions.length)) {
       //Removes all experiment option buttons
@@ -326,8 +329,8 @@ class ExperimentPhase {
     this.previousButton?.hide();
     this.experimentButton.hide();
   }
-  
-  unhide() {
+
+  unhideAllDomObjects() {
     this.weightOneButton.show();
     this.weightFiveButton.show();
     this.weightTenButton.show();

@@ -74,7 +74,7 @@ class AnalyzePhase {
   // Draws the expected outcome (hypothesis) box
   drawExpectedOutcomeBox() {
     const hypothesis = this.currentSim.getHypothesis();
-    this.drawBackgroundObjects.drawTextBox('Wat we hadden verwacht:', hypothesis, 400, 420);
+    this.drawBackgroundObjects.drawTextBox('Wat je had verwacht:', hypothesis, 400, 420);
   }
 
   drawAnalyzeBox(xpos, ypos) {
@@ -117,7 +117,7 @@ class AnalyzePhase {
     fill(36, 106, 115);
     rect(xpos, ypos, this.drawBackgroundObjects.textBoxWidth, boxHeight, 30);
 
-    // Draw hypothesis title
+    // Draw result box title
     fill(255);
     textSize(textsize);
     textStyle(BOLD);
@@ -155,8 +155,8 @@ class AnalyzePhase {
     textAlign(LEFT);
   }
 
+  // Check if all dropdowns have a selection to enable/disable the next button and change its color
   updateAllSelected() {
-    // Check if all dropdowns have a selection to enable/disable the next button
     if (this.currentSim.getGivenIndVarCheck() !== undefined &&
       this.currentSim.getGivenDepVarCheck() !== undefined &&
       this.currentSim.getGivenIndVarChangeCheck() !== undefined &&
@@ -168,19 +168,37 @@ class AnalyzePhase {
     }
   }
 
+  // Updates the color of the nextButton when all dropdownmenus are selected
   updateNextButtonStyle() {
     if (this.allSelected) {
       this.nextButton.style('background', 'linear-gradient(to bottom, #FFB347, #FF8000)');
     }
   }
 
+  //calls the callback function of the main class to go to phase button when allSelected is true, and no feedback needs to be given
   doNextButton() {
     this.currentSim.setEvidence();
 
-    if (this.allSelected) {
-      if (this.adaptiveFeedback.giveAdaptiveFeedbackAnalyzePhase(this.currentSim.givenIndVarCheck, this.currentSim.givenDepVarCheck, this.currentSim.reqDepVar, this.currentSim.reqIndVar)) {
-        this.hideAllDomObjects();
+    const results = this.currentSim.results;
+    const givenIndVar = this.currentSim.getGivenIndVar();
+    const givenDepVar = this.currentSim.getGivenDepVar();
+    const givenIndVarChange = this.currentSim.getGivenIndVarChange();
+    const givenDepVarChange = this.currentSim.getGivenDepVarChange();
+    const givenIndVarCheck = this.currentSim.getGivenIndVarCheck();
+    const givenDepVarCheck = this.currentSim.getGivenDepVarCheck();
+    const givenIndVarChangeCheck = this.currentSim.getGivenIndVarChangeCheck();
+    const givenDepVarChangeCheck = this.currentSim.getGivenDepVarChangeCheck();
+    const reqDepVar = this.currentSim.getReqDepVar();
+    const reqIndVar = this.currentSim.getReqIndVar();
+    const hypothesisCheck = this.currentSim.getHypothesisCheck();
 
+    if (this.allSelected) {
+      if (this.adaptiveFeedback.giveAdaptiveFeedbackAnalyzePhase(results, givenIndVar, givenDepVar, givenIndVarChange, givenDepVarChange, 
+      givenIndVarCheck, givenDepVarCheck, givenIndVarChangeCheck, givenDepVarChangeCheck, reqDepVar, reqIndVar, hypothesisCheck,
+      this.dropdownIndependentVarCheck, this.dropdownIndependentChangeCheck, this.dropdownDependentVarCheck, 
+      this.dropdownDependentChangeCheck, this.dropdownHypothesisCheck)) {
+        
+        this.hideAllDomObjects();
         this.nextPhaseMethod();
       }
     }
@@ -200,8 +218,8 @@ class AnalyzePhase {
     this.nextButton.hide();
     this.previousButton.hide();
   }
-  
-  unhide() {
+
+  unhideAllDomObjects() {
     this.dropdownIndependentVarCheck.show();
     this.dropdownIndependentChangeCheck.show();
     this.dropdownDependentVarCheck.show();

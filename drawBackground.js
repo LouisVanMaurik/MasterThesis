@@ -4,9 +4,10 @@ class DrawBackgroundObjects {
   }
 
   // Draws the background
-  drawBackground() {
+  drawBackground(exerciseNumber) {
     this.drawBackgroundColor();
     this.drawSidePanels();
+    this.drawExerciseNumber(exerciseNumber);
   }
 
   // Draws a solid color for the background
@@ -20,6 +21,14 @@ class DrawBackgroundObjects {
     fill(36, 106, 115);
     rect(0, 0, width, 100);
     rect(0, 0, 300, height);
+  }
+
+  //Display the current exercise number (e.g. 1/3), depending on the currentSim
+  drawExerciseNumber(exerciseNumber) {
+    fill(255);
+    textSize(50);
+    textStyle(BOLD);
+    text(exerciseNumber + '/3', width-100, 70);
   }
 
   // Draws a text box with a title and multiple lines of text
@@ -76,8 +85,11 @@ class DrawBackgroundObjects {
 
     options.forEach(option => dropdown.option(option)); // Add the provided options
 
-    dropdown.changed(() => currentSim.setDropdownSelection(dropdownString, dropdown.value())); // On selection change
-
+    dropdown.changed(() => {
+      currentSim.setDropdownSelection(dropdownString, dropdown.value()); // Callback
+      dropdown.style('border', '1px solid black'); // Change border color to black
+    }
+    );
     this.styleDropdown(dropdown); // Apply custom styles
   }
 
@@ -131,16 +143,16 @@ class DrawBackgroundObjects {
   }
 
   createPopUp(title, text) {
-
     // Show the modal
     const modal = document.getElementById("myModal");
+    const modalTitle = document.getElementById("modalTitle"); // Ensure this variable is declared
     const modalMessage = document.getElementById("modalMessage");
     const closeButton = document.querySelector(".close-button");
     const okButton = document.getElementById("modalOkButton");
 
     // Set the modal message
     modalTitle.innerText = title;
-    modalMessage.innerText = text;
+    modalMessage.innerHTML = text; // Change to innerHTML to allow HTML formatting
 
     // Display the modal
     modal.style.display = "block";
