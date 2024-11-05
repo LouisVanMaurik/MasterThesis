@@ -175,9 +175,16 @@ class AnalyzePhase {
     }
   }
 
+  //Each time the next button is pressed, both get made black (as both are made orange when one of them is false;
+  updateDropdownStyle() {
+    this.dropdownIndependentChangeCheck.style('border', '1px solid black');
+    this.dropdownDependentChangeCheck.style('border', '1px solid black');
+  }
+
   //calls the callback function of the main class to go to phase button when allSelected is true, and no feedback needs to be given
   doNextButton() {
     this.currentSim.setEvidence();
+    this.updateDropdownStyle();
 
     const results = this.currentSim.results;
     const givenIndVar = this.currentSim.getGivenIndVar();
@@ -193,11 +200,11 @@ class AnalyzePhase {
     const hypothesisCheck = this.currentSim.getHypothesisCheck();
 
     if (this.allSelected) {
-      if (this.adaptiveFeedback.giveAdaptiveFeedbackAnalyzePhase(results, givenIndVar, givenDepVar, givenIndVarChange, givenDepVarChange, 
-      givenIndVarCheck, givenDepVarCheck, givenIndVarChangeCheck, givenDepVarChangeCheck, reqDepVar, reqIndVar, hypothesisCheck,
-      this.dropdownIndependentVarCheck, this.dropdownIndependentChangeCheck, this.dropdownDependentVarCheck, 
-      this.dropdownDependentChangeCheck, this.dropdownHypothesisCheck)) {
-        
+      if (!adaptive || this.adaptiveFeedback.giveAdaptiveFeedbackAnalyzePhase(results, givenIndVar, givenDepVar, givenIndVarChange, givenDepVarChange,
+        givenIndVarCheck, givenDepVarCheck, givenIndVarChangeCheck, givenDepVarChangeCheck, reqDepVar, reqIndVar, hypothesisCheck,
+        this.dropdownIndependentVarCheck, this.dropdownIndependentChangeCheck, this.dropdownDependentVarCheck,
+        this.dropdownDependentChangeCheck, this.dropdownHypothesisCheck)) {
+
         this.hideAllDomObjects();
         this.nextPhaseMethod();
       }

@@ -24,6 +24,7 @@ class AdaptiveFeedback {
     this.checkIndGoalAnalyzeCount = 0;
     this.checkDepGoalAnalyzeCount = 0;
     this.checkCheckBoxVariedAndControlledIndCount = 0;
+    this.checkStatementAnalyzeCount = 0;
   }
 
   //checks if all adaptive criteria are met by calling each check function in the HYPOTHESIS phase
@@ -261,56 +262,73 @@ class AdaptiveFeedback {
   giveAdaptiveFeedbackAnalyzePhase(results, givenIndVar, givenDepVar, givenIndVarChange, givenDepVarChange,
     givenIndVarCheck, givenDepVarCheck, givenIndVarChangeCheck, givenDepVarChangeCheck, reqDepVar, reqIndVar, hypothesisCheck,
     DD_IndVarCheck, DD_IndChangeCheck, DD_DepVarCheck, DD_DepChangeCheck, DD_HypothesisCheck) {
-
-    //console.log('givenIndVar = ' + givenIndVar);
-    //console.log('givenDepVar = ' + givenDepVar);
-    //console.log('givenIndVarChange = ' + givenIndVarChange);
-    //console.log('givenDepVarChange = ' + givenDepVarChange);
-    //console.log('givenIndVarCheck = ' + givenIndVarCheck);
-    //console.log('givenDepVarCheck = ' + givenDepVarCheck);
-    //console.log('givenIndVarChangeCheck = ' + givenIndVarChangeCheck);
-    //console.log('givenDepVarChangeCheck = ' + givenDepVarChangeCheck);
-    //console.log('reqDepVar = ' + reqDepVar);
-    //console.log('reqIndVar = ' + reqIndVar);
-    //console.log('hypothesisCheck = ' + hypothesisCheck);
-    //console.log('------------------------------------');
-
     return this.indIsGoalAnalyze(givenIndVarCheck, reqIndVar, DD_IndVarCheck) &&
       this.depIsGoalAnalyze(givenDepVarCheck, reqDepVar, DD_DepVarCheck) &&
-      this.checkIsEqualToWhatHappend(givenIndVarCheck, givenDepVarCheck, givenIndVarChangeCheck, givenDepVarChangeCheck) &&
-      this.checkIsHypothesisCorrect();
+      this.checkIsEqualToWhatHappend(givenIndVarCheck, givenDepVarCheck, givenIndVarChangeCheck, givenDepVarChangeCheck, DD_IndChangeCheck, DD_DepChangeCheck) &&
+      this.checkIsHypothesisCorrect(givenIndVar, givenDepVar, givenIndVarChange, givenDepVarChange, hypothesisCheck, DD_HypothesisCheck);
   }
 
   //Checks if the description of what happend is true, if not: give an error and return false
-  checkIsEqualToWhatHappend(givenIndVarCheck, givenDepVarCheck, givenIndVarChangeCheck, givenDepVarChangeCheck) {
+  checkIsEqualToWhatHappend(givenIndVarCheck, givenDepVarCheck, givenIndVarChangeCheck, givenDepVarChangeCheck, dropdownOne, dropdownTwo) {
     const relationshipDropdownInput = this.getRelationshipDropdownInput(givenIndVarChangeCheck, givenDepVarChangeCheck);
     const realRelationship = this.getRelationshipFromInd(givenIndVarCheck);
-    
-    if (relationshipDropdownInput === realRelationship){
+
+    if (relationshipDropdownInput === realRelationship) {
       return true;
-    } else {
-      //TO DO: Ga morgen deze error message opsplitsen in drie verschillende, daarnaast moet je ook de hypothese functie nog schrijven
-      const text = "GIVEN_IND_VAR en GIVEN_DEP_VAR zijn beide correct! Die hoef je dus niet meer aan te passen. Alleen klopt wat je zegt niet helemaal! Kijk nog is goed wat er gebeurde, als GIVEN_IND_VAR minder/meer werd, wat gebeurde er dan met GIVEN_DEP_VAR?";
-      this.drawBackgroundObjects.createPopUp('Wat gebeurde er precies?', text);
     }
-    
+
+    //Give the error pop-up
+    if (this.checkStatementAnalyzeCount === 0) {
+      this.checkStatementAnalyzeCount++;
+      const text = "De '<b>" + givenIndVarCheck + "</b>' en de '<b>" + givenDepVarCheck + "</b>' zijn beide correct gekozen! Die hoef je dus niet meer aan te passen. Alleen klopt wat je zegt niet helemaal!  <br><br>Kijk nog is goed wat er gebeurde, als '<b>" + givenIndVarCheck + "</b>' minder/meer werd, wat gebeurde er dan met '<b>" + givenDepVarCheck + "</b>'?";
+      this.drawBackgroundObjects.createPopUp('Wat gebeurde er precies?', text);
+    } else {
+      if (realRelationship === 'direct') {
+        const text = "Het klopt nog steeds niet helemaal.  Het juiste antwoord is: Toen ik '" + givenIndVarCheck + "' '<b>meer liet worden</b>', ging '" + givenDepVarCheck + "' '<b>meer worden</b>'. Pas dit aan!";
+        this.drawBackgroundObjects.createPopUp('Wat gebeurde er precies?', text);
+      } else if (realRelationship === 'independent') {
+        const text = "Het klopt nog steeds niet helemaal.  Het juiste antwoord is: Toen ik '" + givenIndVarCheck + "' '<b>meer of minder liet worden</b>', ging '" + givenDepVarCheck + "' '<b>hetzelfde blijven</b>'. Pas dit aan!";
+        this.drawBackgroundObjects.createPopUp('Wat gebeurde er precies?', text);
+      }
+    }
+
+    //Make dropdowns orange
+    dropdownOne.style('font-size', '16px');
+    dropdownOne.style('border', '4px solid orange');
+    dropdownTwo.style('font-size', '16px');
+    dropdownTwo.style('border', '4px solid orange');
+
     return false;
   }
 
   //Checks if the stated hypothesis was correct or not, if not: give an error and return false
-  checkIsHypothesisCorrect() {
-    const indIndex = this.getDepVarIndex();
-    const depIndex = this.getDepVarIndex();
-    return true;
+  checkIsHypothesisCorrect(givenIndVar, givenDepVar, givenIndVarChange, givenDepVarChange, hypothesisCheck, dropdown) {
+    const relationshipDropdownInput = this.getRelationshipDropdownInput(givenIndVarChange, givenDepVarChange);
+    const realRelationship = this.getRelationshipFromInd(givenIndVar);
+
+    //when the inputted relationship is true and the hypothesis check is 'waar', return true
+    //But also, when when the inputted relationship is false and the hypothesis check is 'niet waar', return also true
+    if ((relationshipDropdownInput === realRelationship && hypothesisCheck === 'waar') || (relationshipDropdownInput !== realRelationship && hypothesisCheck === 'niet waar')) {
+      return true;
+    }
+
+    const text = "Kijk nog is goed naar je verwachting. Was je verwachting nou juist WEL of NIET waar?";
+    this.drawBackgroundObjects.createPopUp("Klopt je verwachting?", text);
+
+    //Make dropdown red
+    dropdown.style('font-size', '16px');
+    dropdown.style('border', '4px solid red');
+
+    return false;
   }
 
   // Helper function to determine the relationship between variables
   // Note: this function is fully 'hardcoded'. It would be more elegant to actualy check it in the results
   getRelationshipFromInd(givenIndVar) {
-    if (givenIndVar === 'massa van de bal' || givenIndVar === 'kleur van de bal'){
+    if (givenIndVar === 'massa van de bal' || givenIndVar === 'kleur van de bal') {
       //either 'massa van de bal' and 'kleur van de bal' don't have any effect on time to drop and the velocity
       return 'independent';
-    } else if (givenIndVar === 'hoogte van de bal'){
+    } else if (givenIndVar === 'hoogte van de bal') {
       //the height of the ball has a direct relationship with either time to drop and the velocity
       return 'direct';
     }

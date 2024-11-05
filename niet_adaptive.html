@@ -7,15 +7,118 @@
   const adaptive = false;
   </script>
 
+  <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
   <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
-  <script language="javascript" type="text/javascript" src="MasterThesis.js"></script>
+  <script language="javascript" type="text/javascript" src="AdaptiveFeedback.js"></script>
+  <script language="javascript" type="text/javascript" src="Anaylyze.js"></script>
   <script language="javascript" type="text/javascript" src="DifferentSimulationVariables.js"></script>
+  <script language="javascript" type="text/javascript" src="Experiment.js"></script>
+  <script language="javascript" type="text/javascript" src="ExplainPhase.js"></script>
+  <script language="javascript" type="text/javascript" src="Hypothesis.js"></script>
+  <script language="javascript" type="text/javascript" src="Proof.js"></script>
+  <script language="javascript" type="text/javascript" src="drawBackground.js"></script>
+  <script language="javascript" type="text/javascript" src="MasterThesis.js"></script>
+  <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
 
-  <!-- This line removes any default padding and style.
-       You might only need one of these values set. -->
-  <style> body { padding: 0; margin: 0; } </style>
+  <style>
+    body { padding: 0; margin: 0; }
+
+    /* Modal styles */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1; 
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%; 
+      overflow: auto; /* Enable scrolling for taller content */
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 60%;
+      max-width: 800px;
+      height: 50vh;
+      overflow-y: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      font-size: 20px;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative; /* Important: Position relative to allow absolute positioning inside */
+    }
+
+    .modal-content .text-content {
+      flex: 1; /* Let the text take up the remaining space */
+      padding-right: 20px; /* Add space between text and image */
+    }
+
+    .close-button {
+      position: absolute; /* Absolute positioning */
+      top: 10px; /* Adjust as needed */
+      right: 10px; /* Move it to the right */
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      z-index: 10; /* Ensure it's on top of the image and content */
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Styling for the image */
+    .modal-image {
+      max-width: 300px; /* Limit the image width */
+      height: auto; /* Maintain aspect ratio */
+      border-radius: 10px;
+      object-fit: contain; /* Ensure the image fits within the boundaries */
+    }
+
+    #modalOkButton {
+      padding: 10px 20px;
+      background-color: #FFB347; /* Color of the button */
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      position: absolute; /* Position it at the bottom left */
+      bottom: 20px; /* Adjust as needed */
+      left: 20px; /* Adjust as needed */
+    }
+
+    #modalOkButton:hover {
+      background-color: #FF8000; /* Darker shade on hover */
+    }
+  </style>
 </head>
 
 <body>
+
+  <!-- Modal Structure -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <div class="text-content">
+        <span class="close-button">&times;</span>
+        <h2 id="modalTitle">This is the assigned title of the pop-up</h2>
+        <p id="modalMessage">This is the assigned message of the pop-up!</p>
+      </div>
+      <!-- Image on the right -->
+      <img src="clipartProfessor.png" alt="Popup Image" class="modal-image">
+      <!-- Move the OK button out of the text-content div -->
+      <button id="modalOkButton">OK</button>
+    </div>
+  </div>
+
 </body>
 </html>

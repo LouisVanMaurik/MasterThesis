@@ -118,7 +118,7 @@ class HypothesisPhase {
       const dropdownIndependentVar = this.dropdownIndependentVar;
       const dropdownDependentVar = this.dropdownDependentVar;
 
-      if (this.adaptiveFeedback.giveAdaptiveFeedbackHypothesisPhase(goal, reqIndVar, reqDepVar, givenIndVar, givenDepVar, indVariableOptions, depVariableOptions, dropdownIndependentVar, dropdownDependentVar)) {
+      if (!adaptive || this.adaptiveFeedback.giveAdaptiveFeedbackHypothesisPhase(goal, reqIndVar, reqDepVar, givenIndVar, givenDepVar, indVariableOptions, depVariableOptions, dropdownIndependentVar, dropdownDependentVar)) {
         // Remove dropdowns from DOM
         this.hideAllDomObjects();
 

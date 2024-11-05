@@ -298,9 +298,9 @@ class ExperimentPhase {
 
   //calls the callback function of the main class to go to next phase button when didOneExperiment is true, and no feedback needs to be given
   doNextButton() {
-    if (this.didOneExperiment &&
+    if (this.didOneExperiment && (!adaptive ||
       this.adaptiveFeedback.giveAdaptiveFeedbackExperimentPhase(
-      this.currentSim.results, this.currentSim.reqIndVar, this.currentSim.indVariableOptions.length)) {
+      this.currentSim.results, this.currentSim.reqIndVar, this.currentSim.indVariableOptions.length))) {
       //Removes all experiment option buttons
       this.hideAllDomObjects();
 

@@ -1,22 +1,23 @@
 /*
 
  File Name: MasterThesis.js
- Description: This code is used for my master thesis about the influence of character traits on the effect of adaptive guidance in
-              in a simulation-based environment. It teached kids which factors influence the pace and time a ball falls on the moon.
-              When adaptive is set to true, it also gives real-time feedback based on the user inputs in the program.
-              
-              Although I have some programming experience, the code written is not fully optimized
-              and uses some workarounds, as my master thesis is not aimed at writing quality code. 
+ Description: 
+ This code is used for my master thesis about the influence of character traits on the effect of adaptive guidance in
+ in a simulation-based environment. It teached kids which factors influence the pace and time a ball falls on the moon.
+ When adaptive is set to true, it also gives real-time feedback based on the user inputs in the program.
+ 
+ Although I have some programming experience, the code written is not fully optimized
+ and uses some workarounds, as my master thesis is not aimed at writing quality code.
  
  Author: Louis van Maurik
  Contact: l.vanmaurik@student.utwente.nl
  Date Created: 01 October 2024
- Last Modified: 
+ Last Modified:
  
  Dependencies:
  - p5.js
  
-*/
+ */
 
 let heightTimeSim;
 let heightVelocitySim;
@@ -110,6 +111,12 @@ function drawCurrentPhase() {
     proofPhase.drawProofPhase();
     image(progressBarBewijzen, 20, 200);
     break;
+  case 'end':
+    fill(255);
+    textSize(80);
+    textStyle(BOLD);
+    text('Je bent klaar!', 500, 400);
+    break;
   default:
     console.log('CurrentPhase has a really weird value');
     break;
@@ -143,6 +150,8 @@ function getNextPhase(phase) {
       currentSim = heightVelocitySim;
     } else if (currentSim === heightVelocitySim) {
       currentSim = massTimeSim;
+    } else if (currentSim === massTimeSim) {
+      return 'end';
     }
     explainPhase = undefined;
     hypothesisPhase = undefined;

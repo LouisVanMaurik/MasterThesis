@@ -136,8 +136,8 @@ class ProofPhase {
 
   //calls the callback function of the main class to go to next phase button when checkOneIsChecked is true, and no feedback needs to be given
   doNextButton() {
-    if (this.checkOneIsChecked() && this.adaptiveFeedback.giveAdaptiveFeedbackProofPhase(
-      this.currentSim.results, this.currentSim.getReqIndVar(), this.currentSim.getIndVariableOptions(), this.checkboxes)) {
+    if (this.checkOneIsChecked() && (!adaptive || this.adaptiveFeedback.giveAdaptiveFeedbackProofPhase(
+      this.currentSim.results, this.currentSim.getReqIndVar(), this.currentSim.getIndVariableOptions(), this.checkboxes))) {
       this.hideAllDomObjects();
       this.nextPhaseMethod();
     }

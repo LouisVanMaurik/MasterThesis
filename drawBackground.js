@@ -8,6 +8,7 @@ class DrawBackgroundObjects {
     this.drawBackgroundColor();
     this.drawSidePanels();
     this.drawExerciseNumber(exerciseNumber);
+    this.writeVersion();
   }
 
   // Draws a solid color for the background
@@ -29,6 +30,14 @@ class DrawBackgroundObjects {
     textSize(50);
     textStyle(BOLD);
     text(exerciseNumber + '/3', width-100, 70);
+  }
+  
+  //This is purely for during testing, so I know which version a student has
+  writeVersion(){
+    fill(0);
+    textSize(10);
+    textStyle(BOLD);
+    text('adaptive = ' + adaptive, 10, height - 10);
   }
 
   // Draws a text box with a title and multiple lines of text
