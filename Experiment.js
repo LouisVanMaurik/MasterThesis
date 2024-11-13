@@ -89,7 +89,7 @@ class ExperimentPhase {
   // Draws the goal box
   drawGoalBox() {
     const goal = this.currentSim.goal;
-    this.drawBackgroundObjects.drawTextBox('Wat we willen ontdekken:', goal, 400, 300);
+    this.drawBackgroundObjects.drawTextBox('Wat we willen ontdekken:', goal, 400, 310);
   }
 
   // Draws the expected outcome (hypothesis) box

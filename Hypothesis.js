@@ -63,7 +63,7 @@ class HypothesisPhase {
 
   drawGoal() {
     const goal = this.currentSim.goal;
-    this.drawBackgroundObjects.drawTextBox('Wat we willen ontdekken:', goal, 400, 340);
+    this.drawBackgroundObjects.drawTextBox('Wat we willen ontdekken:', goal, 400, 330);
   }
 
   drawHypothesisBox(xpos, ypos) {

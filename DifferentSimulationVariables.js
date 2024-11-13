@@ -8,7 +8,7 @@
 class DifferentSimulationVariables {
   constructor(temptTextBoxWidth) {
     this.textBoxWidth = temptTextBoxWidth;
-    this.hypothesisExp = this.ArrayOfStrings('Als wetenschapper is het belangrijk om altijd eerst te zeggen wat we denken dat er gaat gebeuren. Laten we dat samen doen! Schrijf op wat je denkt dat er gaat gebeuren. Vergeet hierbij niet het doel van het onderzoek. Kijk daarom eerst goed naar wat we willen ontdekken. Maak daarna de zin af, zodat we onze verwachting duidelijk hebben verwoord. ');
+    this.hypothesisExp = this.ArrayOfStrings('Wat denk je dat er gaat gebeuren? Dat is een hele belangrijke vraag voor een wetenschapper. Laten we die vraag eens samen beantwoorden. Dat begint door te kijken naar het doel van het onderzoek. Wat willen we ontdekken? Daarna beschrijf je je verwachting. Dat doe je door de zin af te maken.');
     this.experimentExp = this.ArrayOfStrings('Het is nu tijd om het experiment uit te voeren. Wat spannend! De bedoeling is dat we nu onze verwachting gaan testen. Klopt onze verwachting wel? Of gebeurt er totaal iets anders?  Gebruik het experiment om er achter te komen of je verwachting klopt!');
     this.analyzeExp = this.ArrayOfStrings('We gaan nu kijken of wat er gebeurde hetzelfde is als wat we dachten dat er ging gebeuren. Wat gebeurde er aan het eind? Was onze verwachting uteindelijk waar of niet waar? Klik op de juiste antwoorden in de vakjes onderin.');
     this.proofExp = this.ArrayOfStrings('Als je wilt laten zien dat iets echt gebeurt is, moet je de goede resultaten kiezen die dat laten zien. Gelukkig hebben we alles opgeschreven. Nu moet je alleen de juiste kiezen die onze beschrijving van er gebeurde bewijzen. Resultaten die niet helpen, hoef je niet te kiezen!');
@@ -273,7 +273,7 @@ class DifferentSimulationVariables {
 class HeightTimeSim extends DifferentSimulationVariables {
   constructor(textBoxWidth) {
     super(textBoxWidth);
-    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoelang het duurt voordat de bal de grond raakt op de maan.');
+    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaalt hoelang het duurt voordat de bal de grond raakt op de maan.');
     this.reqIndVar = 'hoogte van de bal';
     this.reqDepVar = 'tijd voordat de bal de grond raakt';
     this.exerciseNumber = '1';
@@ -305,7 +305,7 @@ class HeightTimeSim extends DifferentSimulationVariables {
 class HeightVelocitySim extends DifferentSimulationVariables {
   constructor(textBoxWidth) {
     super(textBoxWidth);
-    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaald hoe snel de bal gaat wanneer hij de grond raakt op de maan.');
+    this.goal = this.ArrayOfStrings('We willen kijken hoe de hoogte van de bal bepaalt hoe snel de bal gaat wanneer hij de grond raakt op de maan.');
     this.reqIndVar = 'hoogte van de bal';
     this.reqDepVar = 'snelheid als de bal de grond raakt';
     this.exerciseNumber = '2';
@@ -337,7 +337,7 @@ class HeightVelocitySim extends DifferentSimulationVariables {
 class MassTimeSim extends DifferentSimulationVariables {
   constructor(textBoxWidth) {
     super(textBoxWidth);
-    this.goal = this.ArrayOfStrings('We willen kijken hoe de massa van de bal bepaald hoelang het duurt voordat de bal de grond raakt op de maan.');
+    this.goal = this.ArrayOfStrings('We willen kijken hoe de massa van de bal bepaalt hoelang het duurt voordat de bal de grond raakt op de maan.');
     this.reqIndVar = 'massa van de bal';
     this.reqDepVar = 'tijd voordat de bal de grond raakt';
     this.exerciseNumber = '3';
